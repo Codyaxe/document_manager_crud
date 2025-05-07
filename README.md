@@ -32,7 +32,7 @@ This OOP project implements a document management system with a focus on object-
 ## ▶️ Installation & Usage
 
 ### Prerequisites
-- [List any prerequisites/dependencies here]
+- None
 
 ### Setup Instructions
 1. Clone the repository:
