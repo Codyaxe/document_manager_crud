@@ -63,3 +63,37 @@ class JSON(Document):
 
     def share(self):
         pass
+
+class Report(Document):
+
+    def save(self):
+        pass
+
+    def print(self):
+        pass
+
+    def share(self):
+        pass
+
+class Letter(Document):
+
+    def save(self):
+        pass
+
+    def print(self):
+        pass
+
+    def share(self):
+        pass
+
+
+class Email(Document):
+
+    def save(self):
+        pass
+
+    def print(self):
+        pass
+
+    def share(self):
+        pass
