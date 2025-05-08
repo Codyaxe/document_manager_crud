@@ -94,12 +94,32 @@ class Letter(Document):
 
 class Email(Document):
 
+    def __init__(self, title, author, text, subject, recipient):
+        super().__init__(title, author, text)
+        self._subject = subject
+        self._recipient = recipient
+
     def save(self):
         Document.saved_documents.append(self)
         print("Your Email has been saved.")
 
     def print(self):
-        pass
+        print(f"{self._title.title()}{"\n" * 2}"
+        f"{self._subject}{"\n" * 2}"
+        f"Dear {self._recipient}, {"\n" * 2}"
+        f"{self.text}"
+    )
 
     def share(self):
         pass
+
+print()
+
+email_one = Email("Test Docu", "Codyaxe", "I am testing if I can make a long line that would violate the principles of programming making programmers have to scroll horizontally to read the entire text", "Me Codyaxe", "To Someone")
+email_one.print()
+
+email_one.save()
+
+print(Document.saved_documents)
+print("Test 1:")
+Document.saved_documents[0].print()
