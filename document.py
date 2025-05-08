@@ -2,6 +2,8 @@ from abc import ABC, abstractmethod
 
 class Document(ABC):
 
+    saved_documents = []
+
     def __init__(self, title, author, text):
         self._title = title
         self._author = author
@@ -29,6 +31,9 @@ class Document(ABC):
 
     @abstractmethod
     def share(self):
+        pass
+
+    def access(self):
         pass
 
 class PDF(Document):
@@ -90,7 +95,8 @@ class Letter(Document):
 class Email(Document):
 
     def save(self):
-        pass
+        super().saved_documents.append(self)
+        print("Your Email has been saved.")
 
     def print(self):
         pass
