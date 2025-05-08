@@ -106,6 +106,7 @@ class Email(Document):
         self._subject = subject
         self._recipient = recipient
 
+    #Should we make it so it is saved in the OS?
     def save(self):
         Document.saved_documents.append(self)
         print("Your Email has been saved.")
@@ -122,12 +123,12 @@ class Email(Document):
 
 print()
 
-email_one = Email("Test Docu", 
+email_one = Email("Random Title", 
                   "Codyaxe", 
-                  "I am testing if I can make a long line" 
+                  "I am testing if I can make a long line " 
                   "that would violate the principles of programming " 
                   "making programmers have to scroll horizontally to "
-                  "read the entire text", "Me Codyaxe", "To Someone")
+                  "read the entire text", "A Message to a Classmate", "Aleckxa")
 email_one.print()
 
 email_one.save()
@@ -135,3 +136,7 @@ email_one.save()
 print(Document.saved_documents)
 print("Test 1:")
 Document.saved_documents[0].print()
+
+""" A Menu Option"""
+if __name__ == "__main__":
+    pass
