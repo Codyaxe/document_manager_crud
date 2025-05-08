@@ -15,7 +15,7 @@ This OOP project implements a document management system with a focus on object-
 
 ### ✨ Key Features
 - 📑 **Share Method**: Shares a document with others
-- ✏️ **Print Method**: Prints the document to a physical or virtual printer
+- ✏️ **Print Method**: Prints the document to the console
 - 📤 **Save Method**: Saves the document to a file on the system
 
 ---
