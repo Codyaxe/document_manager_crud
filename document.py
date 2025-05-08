@@ -1,4 +1,7 @@
 from abc import ABC, abstractmethod
+import pickle
+import textwrap
+import datetime
 
 class Document(ABC):
 
@@ -7,7 +10,7 @@ class Document(ABC):
     def __init__(self, title, author, text):
         self._title = title
         self._author = author
-        self._text = text
+        self._text = textwrap.fill(text, width=100)
 
     @property
     def title(self):
@@ -87,7 +90,7 @@ class Report(Document):
     def share(self):
         pass
 
-class Letter(Document):
+class Email(Document):
 
     def save(self):
         pass
@@ -99,24 +102,34 @@ class Letter(Document):
         pass
 
 
-class Email(Document):
+class Letter(Document):
 
-    def __init__(self, title, author, text, subject, recipient):
+    def __init__(self, title, author, s_address, r_address, text, subject, recipient):
         super().__init__(title, author, text)
+        self._s_address = s_address
+        self._date = datetime.date.today()
+        self._r_address = r_address
         self._subject = subject
         self._recipient = recipient
 
-    #Should we make it so it is saved in the OS?
+    #We will use Pickle for this.
     def save(self):
         Document.saved_documents.append(self)
-        print("Your Email has been saved.")
+        print("Your Letter has been saved.")
 
     def print(self):
-        print(f"{self._title.title()}{"\n" * 2}"
-        f"{self._subject}{"\n" * 2}"
-        f"Dear {self._recipient}, {"\n" * 2}"
-        f"{self.text}"
-    )
+        
+        print(
+            f"{self._s_address}\n"
+            f"{self._date}\n"
+            f"{self._r_address}\n\n"
+            f"{self._title.title()}\n\n"
+            f"{self._subject}\n\n"
+            f"Dear {self._recipient},\n\n"
+            f"{self._text}\n\n"
+            f"{'Yours Truly,':>100}\n"
+            f"{self._author:>100}"
+        )
 
     def share(self):
         pass
@@ -138,8 +151,8 @@ def read_document():
     
 print()
 
-email_one = Email("Random Title", 
-                  "Codyaxe", 
+email_one = Letter("Random Title", 
+                  "Codyaxe", "Batangas City", "Alangilan",
                   "I am testing if I can make a long line " 
                   "that would violate the principles of programming " 
                   "making programmers have to scroll horizontally to "
