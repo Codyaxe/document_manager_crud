@@ -121,6 +121,21 @@ class Email(Document):
     def share(self):
         pass
 
+def create_document():
+    pass
+
+def share_document():
+    pass
+
+def edit_document():
+    pass
+
+def remove_document():
+    pass
+
+def read_document():
+    pass
+    
 print()
 
 email_one = Email("Random Title", 
@@ -141,8 +156,10 @@ Document.saved_documents[0].print()
 if __name__ == "__main__":
     print("Welcome to the Document Manager. What do you want to do today?")
     while(True):
-        choice = int(input("Press 1 to Create A Document, Press 2 to Share a Document, Press 3 to Edit a Document, Press 4 to Remove a Document, Press 5 to Exit the Program\n"))
-        if choice == 1:
+        choice = int(input("Press 0 to Read a Document, Press 1 to Create a Document, Press 2 to Share a Document, Press 3 to Edit a Document, Press 4 to Remove a Document, Press 5 to Exit the Program\n"))
+        if choice == 0:
+            pass
+        elif choice == 1:
             pass
         elif choice == 2:
             pass
