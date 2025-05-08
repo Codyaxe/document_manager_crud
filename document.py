@@ -95,7 +95,7 @@ class Letter(Document):
 class Email(Document):
 
     def save(self):
-        super().saved_documents.append(self)
+        Document.saved_documents.append(self)
         print("Your Email has been saved.")
 
     def print(self):
