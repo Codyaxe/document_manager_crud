@@ -37,6 +37,9 @@ class Document(ABC):
         pass
 
 class PDF(Document):
+    """ We could create an actual implementation of PDF.
+    Kaso, that would be tedious. We might have to use third
+    party libraries."""
 
     def save(self):
         pass
@@ -48,6 +51,9 @@ class PDF(Document):
         pass
 
 class Word(Document):
+    """ We could create an actual implementation of Word.
+    Kaso, that would be tedious. We might have to use third
+    party libraries."""
 
     def save(self):
         pass
@@ -59,7 +65,8 @@ class Word(Document):
         pass
 
 class JSON(Document):
-
+    """ We could create an actual implementation of JSON.
+    We might have to use third party libraries."""
     def save(self):
         pass
 
@@ -115,7 +122,12 @@ class Email(Document):
 
 print()
 
-email_one = Email("Test Docu", "Codyaxe", "I am testing if I can make a long line that would violate the principles of programming making programmers have to scroll horizontally to read the entire text", "Me Codyaxe", "To Someone")
+email_one = Email("Test Docu", 
+                  "Codyaxe", 
+                  "I am testing if I can make a long line" 
+                  "that would violate the principles of programming " 
+                  "making programmers have to scroll horizontally to "
+                  "read the entire text", "Me Codyaxe", "To Someone")
 email_one.print()
 
 email_one.save()
