@@ -137,6 +137,21 @@ print(Document.saved_documents)
 print("Test 1:")
 Document.saved_documents[0].print()
 
-""" A Menu Option"""
+""" For Implementing A Menu Option"""
 if __name__ == "__main__":
-    pass
+    print("Welcome to the Document Manager. What do you want to do today?")
+    while(True):
+        choice = int(input("Press 1 to Create A Document, Press 2 to Share a Document, Press 3 to Edit a Document, Press 4 to Remove a Document, Press 5 to Exit the Program\n"))
+        if choice == 1:
+            pass
+        elif choice == 2:
+            pass
+        elif choice == 3:
+            pass
+        elif choice == 4:
+            pass
+        elif choice == 5:
+            break
+        else:
+            print("Invalid Choice!")
+            continue
