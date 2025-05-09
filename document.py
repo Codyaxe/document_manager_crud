@@ -3,6 +3,8 @@ import os
 import pickle
 import textwrap
 import datetime
+import keyboard
+import uuid
 
 class Document(ABC):
 
@@ -12,6 +14,12 @@ class Document(ABC):
         self._title = title
         self._author = author
         self._text = textwrap.fill(text, width=100)
+        self._id = str(uuid.uuid4())
+
+    def __eq__(self, other):
+        if not isinstance(other, Document):
+            return False
+        return self._id == other._id  
 
     @property
     def title(self):
@@ -53,6 +61,7 @@ class Document(ABC):
     def access(self):
         pass
 
+
 class PDF(Document):
     """ We could create an actual implementation of PDF.
     Kaso, that would be tedious. We might have to use third
@@ -93,6 +102,54 @@ class JSON(Document):
     def share(self):
         pass
 
+class SlideShow(Document):
+
+    def __init__(self, title, author, text, size):
+        super().__init__(title, author, text)
+        self._size = size
+        self._slides = ["" for slide in range(size)]
+
+    @property
+    def slides(self):
+        return self._slides
+    
+    @slides.setter
+    def slides(self, content):
+        if len(content) != self._size:
+            raise ValueError(f"Content must be a list of {self._size} slides.")
+        for i in range(self._size):
+            if content[i] is not None:
+                self._slides[i] = content[i]
+
+    def save(self):
+        Document.saved_documents.append(self)
+
+        with open("files/docs", "wb") as f:
+            pickle.dump(Document.saved_documents, f)
+        print("Your Powerpoint Presentation has been saved.")
+
+    def print(self):
+        index = 0
+        print(self._slides[index])
+        while True:
+            if keyboard.is_pressed("left"):
+                if index > 0:
+                    index -= 1
+                    print(self._slides[index])
+                    while keyboard.is_pressed("left"): 
+                        pass
+            elif keyboard.is_pressed("right"):
+                if index < self._size - 1:
+                    index += 1
+                    print(self._slides[index])
+                    while keyboard.is_pressed("right"): 
+                        pass
+            elif keyboard.is_pressed("esc"):
+                break
+            
+    def share(self):
+        print("Your SlideShow has been shared.")
+
 class Spreadsheet(Document):
     
     def __init__(self, title, author, text, size):
@@ -119,7 +176,7 @@ class Spreadsheet(Document):
             print()
 
     def share(self):
-        pass
+        print("Your Spreadsheet has been shared.")
 
 #Should I make a subclass of Reports?
 class Report(Document):
@@ -230,23 +287,23 @@ def init():
             except EOFError:
                 print("No data to load.")
 
-email_one = Letter("Random Title", 
-                  "Codyaxe", "Batangas City", "Alangilan",
-                  "I am testing if I can make a long line " 
-                  "that would violate the principles of programming " 
-                  "making programmers have to scroll horizontally to "
-                  "read the entire text", "A Message to a Classmate", "Aleckxa")
-email_one.print()
+# email_one = Letter("Random Title", 
+#                   "Codyaxe", "Batangas City", "Alangilan",
+#                   "I am testing if I can make a long line " 
+#                   "that would violate the principles of programming " 
+#                   "making programmers have to scroll horizontally to "
+#                   "read the entire text", "A Message to a Classmate", "Aleckxa")
+# email_one.print()
+init()
+# email_one.save()
 
-email_one.save()
-
-print(Document.saved_documents)
-print("Test 1:")
-Document.saved_documents[0].print()
+# print(Document.saved_documents)
+# print("Test 1:")
+# Document.saved_documents[0].print()
 
 #For Implementing A Menu Option
 if __name__ == "__main__":
-    init()
+    
     print("Welcome to the Document Manager. What do you want to do today?")
     while(True):
         choice = int(input("Press 0 to Read a Document, Press 1 to Create a Document, Press 2 to Share a Document, Press 3 to Edit a Document, Press 4 to Remove a Document, Press 5 to Exit the Program\n"))
