@@ -23,6 +23,10 @@ class Document(ABC):
     @property
     def text(self):
         return self._text
+    
+    @text.setter
+    def text(self, text):
+        self._text = text
 
     @abstractmethod
     def save(self):
@@ -92,11 +96,31 @@ class Report(Document):
 
 class Email(Document):
 
+    def __init__(self, title, author, s_from, r_to, text, subject, recipient, cc = None):
+        super().__init__(title, author, text)
+        self._s_from = s_from
+        self._r_to = r_to
+        self._subject = subject
+        self._recipient = recipient
+        self._cc = cc
+    
+
     def save(self):
-        pass
+        Document.saved_documents.append(self)
+        print("Your Email has been saved.")
 
     def print(self):
-        pass
+        print(
+            f"From: {self._s_from}\n"
+            f"To: {self._r_to}\n"
+            f"{'CC: ' + self._cc if self._cc else ''}\n"
+            f"Subject: {self._subject}\n\n"
+            f"{self.title.title()}\n\n"
+            f"Dear {self._recipient},\n\n"
+            f"{self.text}\n\n"
+            f"{'Sincerely,':>100}\n"
+            f"{self.author:>100}"
+        )
 
     def share(self):
         pass
@@ -118,21 +142,20 @@ class Letter(Document):
         print("Your Letter has been saved.")
 
     def print(self):
-        
         print(
             f"{self._s_address}\n"
             f"{self._date}\n"
             f"{self._r_address}\n\n"
-            f"{self._title.title()}\n\n"
-            f"{self._subject}\n\n"
+            f"{self.title.title()}\n"
+            f"Subject: {self._subject}\n\n"
             f"Dear {self._recipient},\n\n"
-            f"{self._text}\n\n"
-            f"{'Yours Truly,':>100}\n"
-            f"{self._author:>100}"
+            f"{self.text}\n\n"
+            f"{'Yours truly,':>100}\n"
+            f"{self.author:>100}"
         )
 
     def share(self):
-        pass
+        print("Your Letter has been shared.")
 
 def create_document():
     pass
@@ -171,15 +194,15 @@ if __name__ == "__main__":
     while(True):
         choice = int(input("Press 0 to Read a Document, Press 1 to Create a Document, Press 2 to Share a Document, Press 3 to Edit a Document, Press 4 to Remove a Document, Press 5 to Exit the Program\n"))
         if choice == 0:
-            pass
+            read_document()
         elif choice == 1:
-            pass
+            create_document()
         elif choice == 2:
-            pass
+            share_document()
         elif choice == 3:
-            pass
+            edit_document()
         elif choice == 4:
-            pass
+            remove_document()
         elif choice == 5:
             break
         else:
