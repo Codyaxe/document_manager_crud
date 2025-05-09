@@ -31,9 +31,6 @@ This OOP project implements a document management system with a focus on object-
 
 ## ▶️ Installation & Usage
 
-### Prerequisites
-- None
-
 ### Setup Instructions
 1. Clone the repository:
    ```bash
@@ -41,7 +38,7 @@ This OOP project implements a document management system with a focus on object-
    ```
 2. Run the program:
    ```bash
-   python main.py
+   python document.py
    ```
 
 ### Quick Start Guide
