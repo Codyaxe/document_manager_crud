@@ -5,6 +5,7 @@ import textwrap
 import datetime
 import keyboard
 import uuid
+import time
 
 CLEAR = "\033[K"
 
@@ -46,7 +47,14 @@ class Document(ABC):
     @text.setter
     def text(self, text):
         self._text = text
+        
+    @abstractmethod
+    def create(self):
+        pass
 
+    @abstractmethod
+    def modify(self):
+        pass
 
     @abstractmethod
     def save(self):
@@ -58,9 +66,6 @@ class Document(ABC):
 
     @abstractmethod
     def share(self):
-        pass
-
-    def access(self):
         pass
 
 
@@ -124,11 +129,129 @@ class SlideShow(Document):
             if content[i] is not None:
                 self._slides[i] = content[i]
 
-    def create(self, title, author, text, size):
-        super().__init__(title, author, text)
-        self._size = size
-        self._slides = ["" for slide in range(size)]
+    def create(self):
+        self.title = input("Enter the spreadsheet title: ")
+        self.author = input("Enter the spreadsheet author: ")
+        self.text = input("Enter the spreadsheet description: ")
+        while True:
+            self._size = input("Enter the number of slides in the slideshow: ")
+            if self._size.isdigit():
+                self._size = int(self._size)
+                self._slides = ["" for slide in range(self._size)]
+                break
+            else:
+                print("Please enter a valid number.")
+        while True:
+            choice = input("Do you want to modify the slides now? Y/N")
+            if choice == "Y" or choice == "y":
+                self.modify(onlySlides = True)
+                break
+            elif choice == "N" or choice == "n":
+                break
+            else:
+                print("Please enter a valid input")
 
+    def modify(self, onlySlides = False):
+        if not onlySlides:
+            options = {
+                1: "title",
+                2: "author",
+                3: "text",
+            }
+            print("Which fields do you want to modify?")
+            print("Press 1 to Modify Title")
+            print("Press 2 to Modify Author")
+            print("Press 3 to Modify Description")
+            print("Press 4 to Modify Slides")
+            print("Press 5 to Exit")
+            while True:
+                try:
+                    choice = int(input("Choose: "))
+                    if choice == 4:
+                        break
+                    if choice == 5:
+                        return
+                    if choice in options:
+                        attr_name = options[choice]
+                        new_value = input(f"Enter the new {attr_name}: ")
+                        setattr(self, attr_name, new_value)
+                        break
+                    else:
+                        print("Invalid choice.")
+                except ValueError:
+                    print("Please enter a valid number.")
+        print("Modifying slides...")
+        time.sleep(1)
+        index = 0
+        while True:
+            choice = input(
+                "Which slides would you like to modify? "
+                "You may input a range via 'x-y' (e.g., 0-3), "
+                "one slide via x, or all using 'a': "
+            )
+            if choice == "a":
+                print("You chose to modify all slides. Press the arrow keys to navigate. Press 'esc' to exit.")
+                while True:
+                    print(f"You are in slide {index}:")
+                    self._slides[index] = input("Enter new content: ")
+                    while True:
+                        if keyboard.is_pressed("left"):
+                            if index > 0:
+                                index -= 1
+                                break  
+                            while keyboard.is_pressed("left"):
+                                pass
+                        elif keyboard.is_pressed("right"):
+                            if index < self._size - 1:
+                                index += 1
+                                break
+                            while keyboard.is_pressed("right"):
+                                pass
+                        elif keyboard.is_pressed("esc"):
+                            print("You have exited editing the slideshow")
+                            return  
+        
+            elif "-" in choice:
+                parts = choice.split("-")
+                if len(parts) == 2 and all(part.isdigit() for part in parts):
+                    start, end = map(int, parts)
+                    if start < 0 or end > self._size or start > end:
+                        print(f"Invalid range. Start must be <= end, and both must be between 0 and {self._size - 1}.")
+                        continue
+                    print(f"You chose to modify slides {start} to {end}.")
+                    index = start
+                    while True:
+                        print(f"You are in slide {index}:")
+                        while True:
+                            if keyboard.is_pressed("left"):
+                                if index > start:
+                                    index -= 1
+                                    break
+                                while keyboard.is_pressed("left"):
+                                    pass
+                            elif keyboard.is_pressed("right"):
+                                if index < end - 1:
+                                    index += 1
+                                    break
+                                while keyboard.is_pressed("right"):
+                                    pass
+                            elif keyboard.is_pressed("esc"):
+                                print("You have exited editing the slideshow")
+                                return  
+                else:
+                    print("Invalid range format. Use the form x-y (e.g., 2-5).")
+
+            elif choice.isdigit():
+                slide_num = int(choice)
+                print(f"You chose to modify slide {slide_num}.")
+                self._slides[index] = input("Enter new content: ")
+                break
+            else:
+                print("Please input a valid option!")
+
+
+        
+            
     def save(self):
         Document.saved_documents.append(self)
 
@@ -158,6 +281,7 @@ class SlideShow(Document):
                     while keyboard.is_pressed("right"): 
                         pass
             elif keyboard.is_pressed("esc"):
+                print("You have exited the slideshow")
                 break
             
     def share(self):
@@ -187,15 +311,15 @@ class Spreadsheet(Document):
         self.title = input("Enter the spreadsheet title: ")
         self.author = input("Enter the spreadsheet author: ")
         self.text = input("Enter the spreadsheet text: ")
-        while(True):
+        while True:
             self._size = input("Enter the size of the table: ")
             if self._size.isdigit():
-                size = int(self._size)
-                self._table = [["" for col in range(size)] for row in range(size)]
+                self._size = int(self._size)
+                self._table = [["" for col in range(self._size)] for row in range(self._size)]
                 break
             else:
                 print("Please enter a valid number.")
-        while(True):
+        while True:
             choice = input("Do you want to modify the table now? Y/N")
             if choice == "Y" or choice == "y":
                 self.modify(onlyTable = True)
