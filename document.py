@@ -68,47 +68,6 @@ class Document(ABC):
     def share(self):
         pass
 
-
-class PDF(Document):
-    """ We could create an actual implementation of PDF.
-    Kaso, that would be tedious. We might have to use third
-    party libraries."""
-
-    def save(self):
-        pass
-
-    def print(self):
-        pass
-
-    def share(self):
-        pass
-
-class Word(Document):
-    """ We could create an actual implementation of Word.
-    Kaso, that would be tedious. We might have to use third
-    party libraries."""
-
-    def save(self):
-        pass
-
-    def print(self):
-        pass
-
-    def share(self):
-        pass
-
-class JSON(Document):
-    """ We could create an actual implementation of JSON.
-    We might have to use third party libraries."""
-    def save(self):
-        pass
-
-    def print(self):
-        pass
-
-    def share(self):
-        pass
-
 class SlideShow(Document):
 
     def __init__(self, title = None, author = None, text = "", size = None):
@@ -210,7 +169,7 @@ class SlideShow(Document):
                         elif keyboard.is_pressed("esc"):
                             print("You have exited editing the slideshow")
                             return  
-        
+
             elif "-" in choice:
                 parts = choice.split("-")
                 if len(parts) == 2 and all(part.isdigit() for part in parts):
@@ -248,9 +207,6 @@ class SlideShow(Document):
                 break
             else:
                 print("Please input a valid option!")
-
-
-        
             
     def save(self):
         Document.saved_documents.append(self)
@@ -330,6 +286,7 @@ class Spreadsheet(Document):
                 print("Please enter a valid input")
 
     def modify(self, onlyTable = False):
+        #will be implemented next day
         pass
 
     def save(self):
