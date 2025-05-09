@@ -133,20 +133,20 @@ class SlideShow(Document):
         print(
             f"{self.title.title()}\n"
             f"{self.author}\n\n"
-            f"{self.text}\n\n"
-            f"{self._slides[index]}"
+            f"{self.text}\n"
         )
+        print(f"{self._slides[index]}", end='\r', flush=True)
         while True:
             if keyboard.is_pressed("left"):
                 if index > 0:
                     index -= 1
-                    print(self._slides[index])
+                    print(f"\033[K{self._slides[index]}", end='\r', flush=True)
                     while keyboard.is_pressed("left"): 
                         pass
             elif keyboard.is_pressed("right"):
                 if index < self._size - 1:
                     index += 1
-                    print(self._slides[index])
+                    print(f"\033[K{self._slides[index]}", end='\r', flush=True)
                     while keyboard.is_pressed("right"): 
                         pass
             elif keyboard.is_pressed("esc"):
