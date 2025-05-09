@@ -11,7 +11,8 @@ def test_slideshow_save_and_structure():
     Document.saved_documents.clear()
 
     # Create a SlideShow
-    ss = SlideShow("My Presentation", "Codyaxe", "Some content", 3)
+    ss = SlideShow()
+    ss.create("My Presentation", "Codyaxe", "Some content", 3)
 
     ss.slides = ["Hello", "BOI", None]
 

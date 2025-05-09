@@ -12,7 +12,7 @@ class Document(ABC):
 
     saved_documents = []
 
-    def __init__(self, title, author, text):
+    def __init__(self, title= None, author= None, text= ""):
         self._title = title
         self._author = author
         self._text = textwrap.fill(text, width=100)
@@ -106,10 +106,10 @@ class JSON(Document):
 
 class SlideShow(Document):
 
-    def __init__(self, title, author, text, size):
-        super().__init__(title, author, text)
-        self._size = size
-        self._slides = ["" for slide in range(size)]
+    def __init__(self):
+        super().__init__()
+        self._size = None
+        self._slides = None
 
     @property
     def slides(self):
@@ -122,6 +122,11 @@ class SlideShow(Document):
         for i in range(self._size):
             if content[i] is not None:
                 self._slides[i] = content[i]
+
+    def create(self, title, author, text, size):
+        super().__init__(title, author, text)
+        self._size = size
+        self._slides = ["" for slide in range(size)]
 
     def save(self):
         Document.saved_documents.append(self)
@@ -159,10 +164,10 @@ class SlideShow(Document):
 
 class Spreadsheet(Document):
     
-    def __init__(self, title, author, text, size):
-        super().__init__(title, author, text)
-        self._size = size
-        self._table = [["" for col in range(size)] for row in range(size)]
+    def __init__(self):
+        super().__init__()
+        self._size = None
+        self._table = None
     
     @property
     def table(self):
@@ -175,6 +180,11 @@ class Spreadsheet(Document):
         for i in range(self._size):
             if content[i] is not None:
                 self._table[i] = content[i]
+    
+    def create(self, title, author, text, size):
+        super().__init__(title, author, text)
+        self._size = size
+        self._table = [["" for col in range(size)] for row in range(size)]
 
     def save(self):
         Document.saved_documents.append(self)
@@ -209,6 +219,9 @@ class Report(Document):
     def __init__(self):
         pass
 
+    def create(self):
+        pass
+
     def save(self):
         pass
 
@@ -220,7 +233,15 @@ class Report(Document):
 
 class Email(Document):
 
-    def __init__(self, title, author, s_from, r_to, text, subject, recipient, cc = None):
+    def __init__(self):
+        super().__init__()
+        self._s_from = None
+        self._r_to = None
+        self._subject = None
+        self._recipient = None
+        self._cc = None
+
+    def create(self, title, author, s_from, r_to, text, subject, recipient, cc):
         super().__init__(title, author, text)
         self._s_from = s_from
         self._r_to = r_to
@@ -254,7 +275,15 @@ class Email(Document):
 
 class Letter(Document):
 
-    def __init__(self, title, author, s_address, r_address, text, subject, recipient):
+    def __init__(self):
+        super().__init__()
+        self._s_address = None
+        self._date = None
+        self._r_address = None
+        self._subject = None
+        self._recipient = None
+
+    def create(self, title, author, s_address, r_address, text, subject, recipient):
         super().__init__(title, author, text)
         self._s_address = s_address
         self._date = datetime.date.today()
@@ -347,7 +376,6 @@ init()
 
 #For Implementing A Menu Option
 if __name__ == "__main__":
-    
     print("Welcome to the Document Manager. What do you want to do today?")
     while True:
         choice = int(input("Enter your choice: "))
