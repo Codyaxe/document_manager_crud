@@ -93,7 +93,39 @@ class JSON(Document):
     def share(self):
         pass
 
+class Spreadsheet(Document):
+    
+    def __init__(self, title, author, text, size):
+        super().__init__(title, author, text)
+        self._size = size
+        self._table = [["" for col in range(size)] for row in range(size)]
+
+    def save(self):
+        Document.saved_documents.append(self)
+
+        with open("files/docs", "wb") as f:
+            pickle.dump(Document.saved_documents, f)
+        print("Your Spreadsheet has been saved.")
+
+    def print(self):
+        for row in range(self._size):
+            for column in range(self._size):
+                cell = self._table[row][column]
+                if len(cell) > 10: 
+                    short = textwrap.shorten(cell, width=10, placeholder="...")
+                    print(f"|{short:<10}|", end=" ")
+                else:
+                    print(f"|{cell:<10}|", end="")
+            print()
+
+    def share(self):
+        pass
+
+#Should I make a subclass of Reports?
 class Report(Document):
+
+    def __init__(self):
+        pass
 
     def save(self):
         pass
@@ -197,8 +229,6 @@ def init():
                 print("Documents loaded successfully.")
             except EOFError:
                 print("No data to load.")
-    
-print()
 
 email_one = Letter("Random Title", 
                   "Codyaxe", "Batangas City", "Alangilan",
