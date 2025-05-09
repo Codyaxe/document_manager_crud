@@ -6,6 +6,8 @@ import datetime
 import keyboard
 import uuid
 
+CLEAR = "\033[K"
+
 class Document(ABC):
 
     saved_documents = []
@@ -140,13 +142,13 @@ class SlideShow(Document):
             if keyboard.is_pressed("left"):
                 if index > 0:
                     index -= 1
-                    print(f"\033[K{self._slides[index]}", end='\r', flush=True)
+                    print(f"{CLEAR}{self._slides[index]}", end='\r', flush=True)
                     while keyboard.is_pressed("left"): 
                         pass
             elif keyboard.is_pressed("right"):
                 if index < self._size - 1:
                     index += 1
-                    print(f"\033[K{self._slides[index]}", end='\r', flush=True)
+                    print(f"{CLEAR}{self._slides[index]}", end='\r', flush=True)
                     while keyboard.is_pressed("right"): 
                         pass
             elif keyboard.is_pressed("esc"):
@@ -161,6 +163,18 @@ class Spreadsheet(Document):
         super().__init__(title, author, text)
         self._size = size
         self._table = [["" for col in range(size)] for row in range(size)]
+    
+    @property
+    def table(self):
+        return self._table
+    
+    @table.setter
+    def table(self, content):
+        if len(content) != self._size:
+            raise ValueError(f"Content must be a list of {self._size}x{self._size} table.")
+        for i in range(self._size):
+            if content[i] is not None:
+                self._table[i] = content[i]
 
     def save(self):
         Document.saved_documents.append(self)
@@ -272,7 +286,7 @@ class Letter(Document):
         print("Your Letter has been shared.")
 
 def create_document():
-    pass
+    print("Creating a Document...")
 
 def share_document():
     pass
@@ -298,6 +312,25 @@ def init():
             except EOFError:
                 print("No data to load.")
 
+def handle_choice(choice):
+    actions = {
+        0: read_document,
+        1: create_document,
+        2: share_document,
+        3: edit_document,
+        4: remove_document
+    }
+
+    action = actions.get(choice)
+    if action:
+        action()
+    elif choice == 5:
+        return False
+    else:
+        print("Invalid Choice!")
+
+    return True
+
 # email_one = Letter("Random Title", 
 #                   "Codyaxe", "Batangas City", "Alangilan",
 #                   "I am testing if I can make a long line " 
@@ -316,20 +349,7 @@ init()
 if __name__ == "__main__":
     
     print("Welcome to the Document Manager. What do you want to do today?")
-    while(True):
-        choice = int(input("Press 0 to Read a Document, Press 1 to Create a Document, Press 2 to Share a Document, Press 3 to Edit a Document, Press 4 to Remove a Document, Press 5 to Exit the Program\n"))
-        if choice == 0:
-            read_document()
-        elif choice == 1:
-            create_document()
-        elif choice == 2:
-            share_document()
-        elif choice == 3:
-            edit_document()
-        elif choice == 4:
-            remove_document()
-        elif choice == 5:
+    while True:
+        choice = int(input("Enter your choice: "))
+        if not handle_choice(choice):
             break
-        else:
-            print("Invalid Choice!")
-            continue
