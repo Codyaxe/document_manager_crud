@@ -106,10 +106,11 @@ class JSON(Document):
 
 class SlideShow(Document):
 
-    def __init__(self):
-        super().__init__()
-        self._size = None
-        self._slides = None
+    def __init__(self, title = None, author = None, text = "", size = None):
+        super().__init__(title, author, text)
+        self._size = size
+        if size:
+            self._slides = ["" for slide in range(size)]
 
     @property
     def slides(self):
@@ -164,10 +165,11 @@ class SlideShow(Document):
 
 class Spreadsheet(Document):
     
-    def __init__(self):
-        super().__init__()
-        self._size = None
-        self._table = None
+    def __init__(self, title = None, author = None, text = "", size= None):
+        super().__init__(title, author, text)
+        self._size = size
+        if size:
+            self._table = [["" for col in range(size)] for row in range(size)]
     
     @property
     def table(self):
@@ -233,21 +235,23 @@ class Report(Document):
 
 class Email(Document):
 
-    def __init__(self):
-        super().__init__()
-        self._s_from = None
-        self._r_to = None
-        self._subject = None
-        self._recipient = None
-        self._cc = None
-
-    def create(self, title, author, s_from, r_to, text, subject, recipient, cc):
+    def __init__(self, title = None, author= None, s_from= None, r_to= None, text= "", subject= None, recipient= None, cc= None):
         super().__init__(title, author, text)
         self._s_from = s_from
         self._r_to = r_to
         self._subject = subject
         self._recipient = recipient
         self._cc = cc
+
+    def create(self):
+        self.title = input("Enter the email title: ")
+        self.author = input("Enter the author: ")
+        self.text = input("Enter the email text: ")
+        self._s_from = input("Enter the sender's email: ")
+        self._r_to = input("Enter the recipient's email: ")
+        self._subject = input("Enter the email subject: ")
+        self._recipient = input("Enter the recipient's name: ")
+        self._cc = input("Enter the CC (optional): ")
     
     def save(self):
         Document.saved_documents.append(self)
@@ -275,13 +279,13 @@ class Email(Document):
 
 class Letter(Document):
 
-    def __init__(self):
-        super().__init__()
-        self._s_address = None
+    def __init__(self, title = None, author = None, s_address = None, r_address = None, text = "", subject = None, recipient = None):
+        super().__init__(title, author, text)
+        self._s_address = s_address
         self._date = None
-        self._r_address = None
-        self._subject = None
-        self._recipient = None
+        self._r_address = r_address
+        self._subject = subject
+        self._recipient = recipient
 
     def create(self, title, author, s_address, r_address, text, subject, recipient):
         super().__init__(title, author, text)
