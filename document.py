@@ -153,6 +153,7 @@ class SlideShow(Document):
                 while True:
                     print(f"You are in slide {index}:")
                     self._slides[index] = input("Enter new content: ")
+                    print("Slide is saved! Press the arrow keys to navigate.")
                     while True:
                         if keyboard.is_pressed("left"):
                             if index > 0:
@@ -181,6 +182,8 @@ class SlideShow(Document):
                     index = start
                     while True:
                         print(f"You are in slide {index}:")
+                        self._slides[index] = input("Enter new content: ")
+                        print("Slide is saved! Press the arrow keys to navigate.")
                         while True:
                             if keyboard.is_pressed("left"):
                                 if index > start:
