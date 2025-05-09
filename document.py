@@ -34,11 +34,11 @@ class Document(ABC):
         return self._text
 
     @title.setter
-    def text(self, title):
+    def title(self, title):
         self._title = title
 
     @author.setter
-    def text(self, author):
+    def author(self, author):
         self._author = author
 
     @text.setter
@@ -130,7 +130,12 @@ class SlideShow(Document):
 
     def print(self):
         index = 0
-        print(self._slides[index])
+        print(
+            f"{self.title.title()}\n"
+            f"{self.author}\n\n"
+            f"{self.text}\n\n"
+            f"{self._slides[index]}"
+        )
         while True:
             if keyboard.is_pressed("left"):
                 if index > 0:
@@ -165,6 +170,12 @@ class Spreadsheet(Document):
         print("Your Spreadsheet has been saved.")
 
     def print(self):
+        print(
+            f"{self.title.title()}\n"
+            f"{self.author}\n\n"
+            f"{self.text}\n\n"
+        )
+
         for row in range(self._size):
             for column in range(self._size):
                 cell = self._table[row][column]
