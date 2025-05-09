@@ -183,10 +183,30 @@ class Spreadsheet(Document):
             if content[i] is not None:
                 self._table[i] = content[i]
     
-    def create(self, title, author, text, size):
-        super().__init__(title, author, text)
-        self._size = size
-        self._table = [["" for col in range(size)] for row in range(size)]
+    def create(self):
+        self.title = input("Enter the spreadsheet title: ")
+        self.author = input("Enter the spreadsheet author: ")
+        self.text = input("Enter the spreadsheet text: ")
+        while(True):
+            self._size = input("Enter the size of the table: ")
+            if self._size.isdigit():
+                size = int(self._size)
+                self._table = [["" for col in range(size)] for row in range(size)]
+                break
+            else:
+                print("Please enter a valid number.")
+        while(True):
+            choice = input("Do you want to modify the table now? Y/N")
+            if choice == "Y" or choice == "y":
+                self.modify(onlyTable = True)
+                break
+            elif choice == "N" or choice == "n":
+                break
+            else:
+                print("Please enter a valid input")
+
+    def modify(self, onlyTable = False):
+        pass
 
     def save(self):
         Document.saved_documents.append(self)
@@ -224,6 +244,9 @@ class Report(Document):
     def create(self):
         pass
 
+    def modify(self):
+        pass
+
     def save(self):
         pass
 
@@ -245,13 +268,17 @@ class Email(Document):
 
     def create(self):
         self.title = input("Enter the email title: ")
-        self.author = input("Enter the author: ")
+        self.author = input("Enter the email author: ")
         self.text = input("Enter the email text: ")
         self._s_from = input("Enter the sender's email: ")
         self._r_to = input("Enter the recipient's email: ")
         self._subject = input("Enter the email subject: ")
         self._recipient = input("Enter the recipient's name: ")
         self._cc = input("Enter the CC (optional): ")
+
+
+    def modify(self):
+        pass
     
     def save(self):
         Document.saved_documents.append(self)
@@ -279,21 +306,27 @@ class Email(Document):
 
 class Letter(Document):
 
-    def __init__(self, title = None, author = None, s_address = None, r_address = None, text = "", subject = None, recipient = None):
+    def __init__(self, title = None, author = None, s_address = None, r_address = None, text = "", subject = None, recipient = None, includeDate = False):
         super().__init__(title, author, text)
         self._s_address = s_address
-        self._date = None
+        if includeDate:
+            self._date = datetime.date.today()
         self._r_address = r_address
         self._subject = subject
         self._recipient = recipient
 
-    def create(self, title, author, s_address, r_address, text, subject, recipient):
-        super().__init__(title, author, text)
-        self._s_address = s_address
+    def create(self):
+        self.title = input("Enter the letter title: ")
+        self.author = input("Enter the letter author: ")
+        self.text = input("Enter the letter text: ")
+        self._s_address = input("Enter the sender's address: ")
+        self._r_address = input("Enter the recipient's address: ")
+        self._subject = input("Enter the subject of the letter: ")
+        self._recipient = input("Enter the recipient's name: ")
         self._date = datetime.date.today()
-        self._r_address = r_address
-        self._subject = subject
-        self._recipient = recipient
+
+    def modify(self):
+        pass
 
     def save(self):
         Document.saved_documents.append(self)
