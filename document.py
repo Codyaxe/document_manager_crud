@@ -1,4 +1,5 @@
 from abc import ABC, abstractmethod
+import os
 import pickle
 import textwrap
 import datetime
@@ -23,10 +24,19 @@ class Document(ABC):
     @property
     def text(self):
         return self._text
-    
+
+    @title.setter
+    def text(self, title):
+        self._title = title
+
+    @author.setter
+    def text(self, author):
+        self._author = author
+
     @text.setter
     def text(self, text):
         self._text = text
+
 
     @abstractmethod
     def save(self):
@@ -104,9 +114,11 @@ class Email(Document):
         self._recipient = recipient
         self._cc = cc
     
-
     def save(self):
         Document.saved_documents.append(self)
+
+        with open("files/docs", "wb") as f:
+            pickle.dump(Document.saved_documents, f)
         print("Your Email has been saved.")
 
     def print(self):
@@ -123,7 +135,7 @@ class Email(Document):
         )
 
     def share(self):
-        pass
+        print("Your Email has been shared.")
 
 
 class Letter(Document):
@@ -136,9 +148,11 @@ class Letter(Document):
         self._subject = subject
         self._recipient = recipient
 
-    #We will use Pickle for this.
     def save(self):
         Document.saved_documents.append(self)
+
+        with open("files/docs", "wb") as f:
+            pickle.dump(Document.saved_documents, f)
         print("Your Letter has been saved.")
 
     def print(self):
@@ -171,6 +185,18 @@ def remove_document():
 
 def read_document():
     pass
+
+def init():
+    if not os.path.exists("files"):
+        os.makedirs("files")
+    
+    if os.path.exists("files/docs"):
+        with open("files/docs", "rb") as f:
+            try:
+                Document.saved_documents = pickle.load(f)
+                print("Documents loaded successfully.")
+            except EOFError:
+                print("No data to load.")
     
 print()
 
@@ -188,8 +214,9 @@ print(Document.saved_documents)
 print("Test 1:")
 Document.saved_documents[0].print()
 
-""" For Implementing A Menu Option"""
+#For Implementing A Menu Option
 if __name__ == "__main__":
+    init()
     print("Welcome to the Document Manager. What do you want to do today?")
     while(True):
         choice = int(input("Press 0 to Read a Document, Press 1 to Create a Document, Press 2 to Share a Document, Press 3 to Edit a Document, Press 4 to Remove a Document, Press 5 to Exit the Program\n"))
