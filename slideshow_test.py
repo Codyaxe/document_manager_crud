@@ -1,4 +1,4 @@
-from document import SlideShow, Document
+from document import Slideshow, Document
 import pickle
 import os
 
@@ -11,7 +11,7 @@ def test_slideshow_save_and_structure():
     Document.saved_documents.clear()
 
     # Create a SlideShow
-    ss = SlideShow("My Presentation", "Codyaxe", "Some content", 3)
+    ss = Slideshow("My Presentation", "Codyaxe", "Some content", 3)
 
     ss.slides = ["Hello", "BOI", None]
 
