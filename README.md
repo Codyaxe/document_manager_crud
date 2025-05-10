@@ -11,12 +11,14 @@ A robust object-oriented programming project for document management and manipul
 ---
 
 ## 📋 Project Overview
-This OOP project implements a document management system with a focus on object-oriented design principles. The system allows users to share documents with others (Share), print documents (Print), and save documents to files (Save) through an intuitive interface.
+This OOP project implements a document management system with a focus on object-oriented design principles. The system allows users to create documents (Create), read documents (Read), remove documents (Remove), and modify documents (Modify).
 
 ### ✨ Key Features
-- 📑 **Share Method**: Shares a document with others
+Each Document objects have the following methods:
+- 📑 **Create Method**: Creates a document on the system
 - ✏️ **Print Method**: Prints the document to the console
-- 📤 **Save Method**: Saves the document to a file on the system
+- ✏️ **Modify Method**: Modifies the document on the system
+- 📤 **Save Method**: Saves the document to a file on the system (Automatically Handled)
 
 ---
 
@@ -25,7 +27,10 @@ This OOP project implements a document management system with a focus on object-
 - **Design Pattern**: Object-Oriented Programming
 - **Classes**:
   - `Document`: Base class representing document objects
-  - [Placeholder Classes]
+  - `Spreadsheet`: Represents tabular data documents
+  - `Slideshow`: Represents presentation-style documents with slides
+  - `Email`: Represents digital correspondence documents with sender, recipient, and subject
+  - `Letter`: Represents written communication in document form
 
 ---
 
@@ -42,10 +47,12 @@ This OOP project implements a document management system with a focus on object-
    ```
 
 ### Quick Start Guide
-1. Launch the application
-2. Use the Share method to share your document with others
-3. Use the Print method to print your document
-4. Use the Save method to save your document to a file
+1. Run the program
+3. Enter '1' to use the Use the Read function to print the document to the console
+4. Enter '2' to use the Create function to create your document
+5. Enter '3' to use the Modify function to modify your document
+6. Enter '4' to use the Remove function to remove the document
+7. Enter '5' to use the Exit the program
 
 ---
 
