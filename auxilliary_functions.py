@@ -1,5 +1,4 @@
 import os
-import sys
 import platform
 
 def blinking_dots():
@@ -10,8 +9,8 @@ def clear_console():
 
 def flush_input():
     if platform.system() != 'Windows':
-        import termios
-        termios.tcflush(sys.stdin, termios.TCIFLUSH)
+        import sys, termios
+        termios.tcflush(sys.stdin, termios.TCIOFLUSH)
     else:
         import msvcrt
         while msvcrt.kbhit():  

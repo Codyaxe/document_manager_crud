@@ -36,6 +36,10 @@ class Document(ABC):
     @property
     def text(self):
         return self._text
+    
+    @property
+    def id(self):
+        return self._id
 
     @title.setter
     def title(self, title):
@@ -121,13 +125,13 @@ class SlideShow(Document):
                 2: "author",
                 3: "text",
             }
-            print("Which fields do you want to modify?")
-            print("Press 1 to Modify Title")
-            print("Press 2 to Modify Author")
-            print("Press 3 to Modify Description")
-            print("Press 4 to Modify Slides")
-            print("Press 5 to Exit")
             while True:
+                print("Which fields do you want to modify?")
+                print("Press 1 to Modify Title")
+                print("Press 2 to Modify Author")
+                print("Press 3 to Modify Description")
+                print("Press 4 to Modify Slides")
+                print("Press 5 to Exit")
                 choice = input("Choose: ")
                 if choice.isdigit():
                     num = int(choice)
@@ -139,7 +143,9 @@ class SlideShow(Document):
                         attr_name = options[num]
                         new_value = input(f"Enter the new {attr_name}: ")
                         setattr(self, attr_name, new_value)
-                        break
+                        print("The Slideshow has been modified...")
+                        time.sleep(1)
+                        clear_console()
                     else:
                         clear_console()
                         print("Invalid choice.")
@@ -240,7 +246,12 @@ class SlideShow(Document):
                 print("Please input a valid option!")
             
     def save(self):
-        Document.saved_documents.append(self)
+        for i in range(len(Document.saved_documents)):
+            if Document.saved_documents[i].id == self.id:
+                Document.saved_documents[i] = self 
+                break
+        else:
+            Document.saved_documents.append(self)
 
         with open("files/docs", "wb") as f:
             pickle.dump(Document.saved_documents, f)
@@ -324,13 +335,13 @@ class Spreadsheet(Document):
                 2: "author",
                 3: "text",
             }
-            print("Which fields do you want to modify?")
-            print("Press 1 to Modify Title")
-            print("Press 2 to Modify Author")
-            print("Press 3 to Modify Description")
-            print("Press 4 to Modify Table")
-            print("Press 5 to Exit")
             while True:
+                print("Which fields do you want to modify?")
+                print("Press 1 to Modify Title")
+                print("Press 2 to Modify Author")
+                print("Press 3 to Modify Description")
+                print("Press 4 to Modify Table")
+                print("Press 5 to Exit")
                 choice = input("Choose: ")
                 if choice.isdigit():
                     num = int(choice)
@@ -342,7 +353,9 @@ class Spreadsheet(Document):
                         attr_name = options[num]
                         new_value = input(f"Enter the new {attr_name}: ")
                         setattr(self, attr_name, new_value)
-                        break
+                        print("The Spreadsheet has been modified...")
+                        time.sleep(1)
+                        clear_console()
                     else:
                         clear_console()
                         print("Invalid choice.")
@@ -396,7 +409,12 @@ class Spreadsheet(Document):
                 break
 
     def save(self):
-        Document.saved_documents.append(self)
+        for i in range(len(Document.saved_documents)):
+            if Document.saved_documents[i].id == self.id:
+                Document.saved_documents[i] = self 
+                break
+        else:
+            Document.saved_documents.append(self)
 
         with open("files/docs", "wb") as f:
             pickle.dump(Document.saved_documents, f)
@@ -420,7 +438,7 @@ class Spreadsheet(Document):
             print()
 
         while True:
-            choice = input("Do you want to navigate the cells? Y/N").strip().lower()
+            choice = input("Do you want to navigate the cells? Y/N: ").strip().lower()
             if choice == "y":
                 break
             elif choice == "n":
@@ -536,6 +554,9 @@ class Email(Document):
                 elif num in fields:
                     attr, prompt = fields[num]
                     setattr(self, attr, input(prompt))
+                    print("The Email has been modified...")
+                    time.sleep(1)
+                    clear_console()
                 else:
                     clear_console()
                     print("Invalid choice.")
@@ -544,7 +565,12 @@ class Email(Document):
                 print("Please enter a valid number.")
     
     def save(self):
-        Document.saved_documents.append(self)
+        for i in range(len(Document.saved_documents)):
+            if Document.saved_documents[i].id == self.id:
+                Document.saved_documents[i] = self 
+                break
+        else:
+            Document.saved_documents.append(self)
 
         with open("files/docs", "wb") as f:
             pickle.dump(Document.saved_documents, f)
@@ -616,6 +642,9 @@ class Letter(Document):
                 elif num in fields:
                     attr, prompt = fields[num]
                     setattr(self, attr, input(prompt))
+                    print("The Letter has been modified...")
+                    time.sleep(1)
+                    clear_console()
                 else:
                     clear_console()
                     print("Invalid choice.")
@@ -624,7 +653,12 @@ class Letter(Document):
                 print("Please enter a valid number.")
 
     def save(self):
-        Document.saved_documents.append(self)
+        for i in range(len(Document.saved_documents)):
+            if Document.saved_documents[i].id == self.id:
+                Document.saved_documents[i] = self 
+                break
+        else:
+            Document.saved_documents.append(self)
 
         with open("files/docs", "wb") as f:
             pickle.dump(Document.saved_documents, f)
@@ -649,7 +683,7 @@ class Letter(Document):
 def create_document():
     clear_console()
     print("Creating a Document...")
-    time.sleep(0.1)
+    time.sleep(1)
 
     #None are placeholder objects
     docs = {1: Spreadsheet,
@@ -697,17 +731,140 @@ def share_document():
 def edit_document():
     clear_console()
     print("Editing a Document...")
-    time.sleep(0.1)
-
-    for doc in Document.saved_documents:
-        print(f"Title: {doc.title}")
-        time.sleep(1)
+    time.sleep(1)
+    size = len(Document.saved_documents)
+    index = 0
+    
+    if size == 0:
+        print("You have no documents to edit")
+        return
+    
+    print("Choose a document to edit.")
+    print("Use arrow keys to navigate. Press 'esc' to exit. Press 'enter' to edit document.")
+    print(f"{CLEAR}Currently at Document {index}: {Document.saved_documents[index].title} Type: {type(Document.saved_documents[index]).__name__}", end='\r', flush=True)
+    while True:
+        if keyboard.is_pressed("left"):
+            if index > 0:
+                index -= 1
+                print(f"{CLEAR}Currently at Document {index}: {Document.saved_documents[index].title} Type: {type(Document.saved_documents[index]).__name__}", end='\r', flush=True)
+                while keyboard.is_pressed("left"):
+                    pass
+        elif keyboard.is_pressed("right"):
+            if index < size - 1:
+                index += 1
+                print(f"{CLEAR}Currently at Document {index}: {Document.saved_documents[index].title} Type: {type(Document.saved_documents[index]).__name__}", end='\r', flush=True)
+                while keyboard.is_pressed("right"):
+                    pass
+        elif keyboard.is_pressed("enter"):
+            print(CLEAR, end='\r', flush=True)
+            while keyboard.is_pressed("enter"):
+                pass
+            flush_input()
+            clear_console()
+            Document.saved_documents[index].modify()
+            while keyboard.is_pressed("enter"):
+                pass
+            flush_input()
+            clear_console()
+            Document.saved_documents[index].save()
+            print(f"{CLEAR}Currently at Document {index}: {Document.saved_documents[index].title} Type: {type(Document.saved_documents[index]).__name__}", end='\r', flush=True)
+        elif keyboard.is_pressed("esc"):
+            return  
 
 def remove_document():
-    pass
+    clear_console()
+    print("Removing a Document...")
+    time.sleep(1)
+    size = len(Document.saved_documents)
+    index = 0
+
+    if size == 0:
+        print("You have no documents to remove")
+        return
+    
+    print("Choose a document to remove.")
+    print("Use arrow keys to navigate. Press 'esc' to exit. Press 'enter' to remove document.")
+    print(f"{CLEAR}Currently at Document {index}: {Document.saved_documents[index].title} Type: {type(Document.saved_documents[index]).__name__}", end='\r', flush=True)
+    while True:
+        size = len(Document.saved_documents)
+
+        if keyboard.is_pressed("left"):
+            if index > 0:
+                index -= 1
+                print(f"{CLEAR}Currently at Document {index}: {Document.saved_documents[index].title} Type: {type(Document.saved_documents[index]).__name__}", end='\r', flush=True)
+                while keyboard.is_pressed("left"):
+                    pass
+        elif keyboard.is_pressed("right"):
+            if index < size - 1:
+                index += 1
+                print(f"{CLEAR}Currently at Document {index}: {Document.saved_documents[index].title} Type: {type(Document.saved_documents[index]).__name__}", end='\r', flush=True)
+                while keyboard.is_pressed("right"):
+                    pass
+        elif keyboard.is_pressed("enter"):
+            print(CLEAR, end='\r', flush=True)
+            while keyboard.is_pressed("enter"):
+                pass
+            flush_input()
+            clear_console()
+            removed_document = Document.saved_documents.pop(index)
+            print(f"{CLEAR}Removed Document: {removed_document.title} Type: {type(removed_document).__name__}", end='\r', flush=True)
+            time.sleep(1)
+            with open("files/docs", "wb") as f:
+                pickle.dump(Document.saved_documents, f)
+            while keyboard.is_pressed("enter"):
+                pass
+            flush_input()
+            clear_console()
+            index -= 1
+            if len(Document.saved_documents) > 0:
+                print(f"{CLEAR}Currently at Document {index}: {Document.saved_documents[index].title} Type: {type(Document.saved_documents[index]).__name__}", end='\r', flush=True)
+            else:
+                print("You have no documents")
+                return
+        elif keyboard.is_pressed("esc"):
+            return  
 
 def read_document():
-    pass
+    clear_console()
+    print("Reading a Document...")
+    time.sleep(1)
+    size = len(Document.saved_documents)
+    index = 0
+    
+    if size == 0:
+        print("You have no documents to read")
+        return
+    
+    print("Choose a document to read.")
+    print("Use arrow keys to navigate. Press 'esc' to exit. Press 'enter' to read document.")
+    print(f"{CLEAR}Currently at Document {index}: {Document.saved_documents[index].title} Type: {type(Document.saved_documents[index]).__name__}", end='\r', flush=True)
+    while True:
+        if keyboard.is_pressed("left"):
+            if index > 0:
+                index -= 1
+                print(f"{CLEAR}Currently at Document {index}: {Document.saved_documents[index].title} Type: {type(Document.saved_documents[index]).__name__}", end='\r', flush=True)
+                while keyboard.is_pressed("left"):
+                    pass
+        elif keyboard.is_pressed("right"):
+            if index < size - 1:
+                index += 1
+                print(f"{CLEAR}Currently at Document {index}: {Document.saved_documents[index].title} Type: {type(Document.saved_documents[index]).__name__}", end='\r', flush=True)
+                while keyboard.is_pressed("right"):
+                    pass
+        elif keyboard.is_pressed("enter"):
+            print(CLEAR, end='\r', flush=True)
+            while keyboard.is_pressed("enter"):
+                pass
+            flush_input()
+            clear_console()
+            Document.saved_documents[index].print()
+            while keyboard.is_pressed("enter"):
+                pass
+            flush_input()
+            clear_console()
+            print(f"{CLEAR}Currently at Document {index}: {Document.saved_documents[index].title} Type: {type(Document.saved_documents[index]).__name__}", end='\r', flush=True)
+        elif keyboard.is_pressed("esc"):
+            return  
 
 def init():
     if not os.path.exists("files"):
