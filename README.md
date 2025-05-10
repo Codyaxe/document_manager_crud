@@ -48,7 +48,7 @@ Each Document objects have the following methods:
 
 ### Quick Start Guide
 1. Run the program
-3. Enter '1' to use the Use the Read function to print the document to the console
+3. Enter '1' to use the Read function to print the document to the console
 4. Enter '2' to use the Create function to create your document
 5. Enter '3' to use the Modify function to modify your document
 6. Enter '4' to use the Remove function to remove the document
