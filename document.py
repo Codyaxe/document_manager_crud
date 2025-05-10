@@ -10,11 +10,12 @@ import time
 
 CLEAR = "\033[K"
 
+
 class Document(ABC):
 
     saved_documents = []
 
-    def __init__(self, title= None, author= None, text= ""):
+    def __init__(self, title=None, author=None, text=""):
         self._title = title
         self._author = author
         self._text = textwrap.fill(text, width=100)
@@ -23,20 +24,20 @@ class Document(ABC):
     def __eq__(self, other):
         if not isinstance(other, Document):
             return False
-        return self._id == other._id  
+        return self._id == other._id
 
     @property
     def title(self):
         return self._title
-    
+
     @property
     def author(self):
         return self._author
-    
+
     @property
     def text(self):
         return self._text
-    
+
     @property
     def id(self):
         return self._id
@@ -52,7 +53,7 @@ class Document(ABC):
     @text.setter
     def text(self, text):
         self._text = text
-        
+
     @abstractmethod
     def create(self):
         pass
@@ -69,9 +70,10 @@ class Document(ABC):
     def print(self):
         pass
 
+
 class Slideshow(Document):
 
-    def __init__(self, title = None, author = None, text = "", size = None):
+    def __init__(self, title=None, author=None, text="", size=None):
         super().__init__(title, author, text)
         self._size = size
         if size:
@@ -80,7 +82,7 @@ class Slideshow(Document):
     @property
     def slides(self):
         return self._slides
-    
+
     @slides.setter
     def slides(self, content):
         if len(content) != self._size:
@@ -103,10 +105,11 @@ class Slideshow(Document):
                 clear_console()
                 print("Please enter a valid number.")
         while True:
-            choice = input("Do you want to modify the slides now? Y/N: ").strip().lower()
+            choice = input(
+                "Do you want to modify the slides now? Y/N: ").strip().lower()
             if choice == "y":
                 clear_console()
-                self.modify(onlySlides = True)
+                self.modify(onlySlides=True)
                 break
             elif choice == "n":
                 break
@@ -114,7 +117,7 @@ class Slideshow(Document):
                 clear_console()
                 print("Please enter a valid input")
 
-    def modify(self, onlySlides = False):
+    def modify(self, onlySlides=False):
         if not onlySlides:
             options = {
                 1: "title",
@@ -161,19 +164,23 @@ class Slideshow(Document):
             if choice == "a":
                 clear_console()
                 print("You chose to modify all slides. ")
-                print("Use arrow keys to navigate. Press 'esc' to exit. Press 'enter' to edit cell.")
-                print(f"{CLEAR}Currently at Slide {index}: {self.slides[index]}", end='\r', flush=True)
+                print(
+                    "Use arrow keys to navigate. Press 'esc' to exit. Press 'enter' to edit cell.")
+                print(
+                    f"{CLEAR}Currently at Slide {index}: {self.slides[index]}", end='\r', flush=True)
                 while True:
                     if keyboard.is_pressed("left"):
                         if index > 0:
                             index -= 1
-                            print(f"{CLEAR}Currently at Slide {index}: {self.slides[index]}", end='\r', flush=True)
+                            print(
+                                f"{CLEAR}Currently at Slide {index}: {self.slides[index]}", end='\r', flush=True)
                         while keyboard.is_pressed("left"):
                             pass
                     elif keyboard.is_pressed("right"):
                         if index < self._size - 1:
                             index += 1
-                            print(f"{CLEAR}Currently at Slide {index}: {self.slides[index]}", end='\r', flush=True)
+                            print(
+                                f"{CLEAR}Currently at Slide {index}: {self.slides[index]}", end='\r', flush=True)
                         while keyboard.is_pressed("right"):
                             pass
                     elif keyboard.is_pressed("enter"):
@@ -184,10 +191,11 @@ class Slideshow(Document):
                         self._slides[index] = input("Enter new content: ")
                         while keyboard.is_pressed("enter"):
                             pass
-                        print(f"{CLEAR}Currently at Slide {index}: {self.slides[index]}", end='\r', flush=True)
+                        print(
+                            f"{CLEAR}Currently at Slide {index}: {self.slides[index]}", end='\r', flush=True)
                     elif keyboard.is_pressed("esc"):
                         print("You have exited editing the slideshow")
-                        return  
+                        return
 
             elif "-" in choice:
                 clear_console()
@@ -195,23 +203,28 @@ class Slideshow(Document):
                 if len(parts) == 2 and all(part.isdigit() for part in parts):
                     start, end = map(int, parts)
                     if start < 0 or end > self._size - 1 or start > end:
-                        print(f"Invalid range. Start must be <= end, and both must be between 0 and {self._size - 1}.")
+                        print(
+                            f"Invalid range. Start must be <= end, and both must be between 0 and {self._size - 1}.")
                         continue
                     print(f"You chose to modify slides {start} to {end}.")
                     index = start
-                    print("Use arrow keys to navigate. Press 'esc' to exit. Press 'enter' to edit cell.")
-                    print(f"{CLEAR}Currently at Slide {index}: {self.slides[index]}", end='\r', flush=True)
+                    print(
+                        "Use arrow keys to navigate. Press 'esc' to exit. Press 'enter' to edit cell.")
+                    print(
+                        f"{CLEAR}Currently at Slide {index}: {self.slides[index]}", end='\r', flush=True)
                     while True:
                         if keyboard.is_pressed("left"):
                             if index > start:
                                 index -= 1
-                                print(f"{CLEAR}Currently at Slide {index}: {self.slides[index]}", end='\r', flush=True)
+                                print(
+                                    f"{CLEAR}Currently at Slide {index}: {self.slides[index]}", end='\r', flush=True)
                             while keyboard.is_pressed("left"):
-                                    pass
+                                pass
                         elif keyboard.is_pressed("right"):
                             if index < end - 1:
                                 index += 1
-                                print(f"{CLEAR}Currently at Slide {index}: {self.slides[index]}", end='\r', flush=True)
+                                print(
+                                    f"{CLEAR}Currently at Slide {index}: {self.slides[index]}", end='\r', flush=True)
                             while keyboard.is_pressed("right"):
                                 pass
                         elif keyboard.is_pressed("enter"):
@@ -223,10 +236,11 @@ class Slideshow(Document):
                             self._slides[index] = input()
                             while keyboard.is_pressed("enter"):
                                 pass
-                            print(f"{CLEAR}Currently at Slide {index}: {self.slides[index]}", end='\r', flush=True)
+                            print(
+                                f"{CLEAR}Currently at Slide {index}: {self.slides[index]}", end='\r', flush=True)
                         elif keyboard.is_pressed("esc"):
                             print("You have exited slideshow modification")
-                            return  
+                            return
                 else:
                     clear_console()
                     print("Invalid range format. Use the form x-y (e.g., 2-5).")
@@ -240,11 +254,11 @@ class Slideshow(Document):
             else:
                 clear_console()
                 print("Please input a valid option!")
-            
+
     def save(self):
         for i in range(len(Document.saved_documents)):
             if Document.saved_documents[i].id == self.id:
-                Document.saved_documents[i] = self 
+                Document.saved_documents[i] = self
                 break
         else:
             Document.saved_documents.append(self)
@@ -265,39 +279,43 @@ class Slideshow(Document):
             if keyboard.is_pressed("left"):
                 if index > 0:
                     index -= 1
-                    print(f"{CLEAR}{self._slides[index]}", end='\r', flush=True)
-                    while keyboard.is_pressed("left"): 
+                    print(
+                        f"{CLEAR}{self._slides[index]}", end='\r', flush=True)
+                    while keyboard.is_pressed("left"):
                         pass
             elif keyboard.is_pressed("right"):
                 if index < self._size - 1:
                     index += 1
-                    print(f"{CLEAR}{self._slides[index]}", end='\r', flush=True)
-                    while keyboard.is_pressed("right"): 
+                    print(
+                        f"{CLEAR}{self._slides[index]}", end='\r', flush=True)
+                    while keyboard.is_pressed("right"):
                         pass
             elif keyboard.is_pressed("esc"):
                 print("You have exited the slideshow")
                 break
 
+
 class Spreadsheet(Document):
-    
-    def __init__(self, title = None, author = None, text = "", size= None):
+
+    def __init__(self, title=None, author=None, text="", size=None):
         super().__init__(title, author, text)
         self._size = size
         if size:
             self._table = [["" for col in range(size)] for row in range(size)]
-    
+
     @property
     def table(self):
         return self._table
-    
+
     @table.setter
     def table(self, content):
         if len(content) != self._size:
-            raise ValueError(f"Content must be a list of {self._size}x{self._size} table.")
+            raise ValueError(
+                f"Content must be a list of {self._size}x{self._size} table.")
         for i in range(self._size):
             if content[i] is not None:
                 self._table[i] = content[i]
-    
+
     def create(self):
         self.title = input("Enter the spreadsheet title: ")
         self.author = input("Enter the spreadsheet author: ")
@@ -306,14 +324,16 @@ class Spreadsheet(Document):
             self._size = input("Enter the size of the table: ")
             if self._size.isdigit():
                 self._size = int(self._size)
-                self._table = [["" for col in range(self._size)] for row in range(self._size)]
+                self._table = [["" for col in range(
+                    self._size)] for row in range(self._size)]
                 break
             else:
                 print("Please enter a valid number.")
         while True:
-            choice = input("Do you want to modify the table now? Y/N: ").strip().lower()
+            choice = input(
+                "Do you want to modify the table now? Y/N: ").strip().lower()
             if choice == "y":
-                self.modify(onlyTable = True)
+                self.modify(onlyTable=True)
                 break
             elif choice == "n":
                 break
@@ -321,7 +341,7 @@ class Spreadsheet(Document):
                 clear_console()
                 print("Please enter a valid input")
 
-    def modify(self, onlyTable = False):
+    def modify(self, onlyTable=False):
         if not onlyTable:
             options = {
                 1: "title",
@@ -359,31 +379,37 @@ class Spreadsheet(Document):
         print("Modifying table...")
         time.sleep(1)
         row, col = 0, 0
-        print("Use arrow keys to navigate. Press 'esc' to exit. Press 'enter' to edit cell.")
-        print(f"{CLEAR}Currently at cell ({row}, {col}): {self._table[row][col]}", end='\r', flush=True)
+        print(
+            "Use arrow keys to navigate. Press 'esc' to exit. Press 'enter' to edit cell.")
+        print(
+            f"{CLEAR}Currently at cell ({row}, {col}): {self._table[row][col]}", end='\r', flush=True)
         while True:
             if keyboard.is_pressed("left"):
                 if col > 0:
                     col -= 1
-                    print(f"{CLEAR}Currently at cell ({row}, {col}): {self._table[row][col]}", end='\r', flush=True)
+                    print(
+                        f"{CLEAR}Currently at cell ({row}, {col}): {self._table[row][col]}", end='\r', flush=True)
                 while keyboard.is_pressed("left"):
                     pass
             elif keyboard.is_pressed("right"):
                 if col < self._size - 1:
                     col += 1
-                    print(f"{CLEAR}Currently at cell ({row}, {col}): {self._table[row][col]}", end='\r', flush=True)
+                    print(
+                        f"{CLEAR}Currently at cell ({row}, {col}): {self._table[row][col]}", end='\r', flush=True)
                 while keyboard.is_pressed("right"):
                     pass
             elif keyboard.is_pressed("up"):
                 if row > 0:
                     row -= 1
-                    print(f"{CLEAR}Currently at cell ({row}, {col}): {self._table[row][col]}", end='\r', flush=True)
+                    print(
+                        f"{CLEAR}Currently at cell ({row}, {col}): {self._table[row][col]}", end='\r', flush=True)
                 while keyboard.is_pressed("up"):
                     pass
             elif keyboard.is_pressed("down"):
                 if row < self._size - 1:
                     row += 1
-                    print(f"{CLEAR}Currently at cell ({row}, {col}): {self._table[row][col]}", end='\r', flush=True)
+                    print(
+                        f"{CLEAR}Currently at cell ({row}, {col}): {self._table[row][col]}", end='\r', flush=True)
                 while keyboard.is_pressed("down"):
                     pass
             elif keyboard.is_pressed("enter"):
@@ -391,11 +417,13 @@ class Spreadsheet(Document):
                 while keyboard.is_pressed("enter"):
                     pass
                 flush_input()
-                new_content = input(f"Enter new content for cell ({row}, {col}): ")
+                new_content = input(
+                    f"Enter new content for cell ({row}, {col}): ")
                 while keyboard.is_pressed("enter"):
                     pass
                 self._table[row][col] = new_content
-                print(f"{CLEAR}Currently at cell ({row}, {col}): {self._table[row][col]}", end='\r', flush=True)
+                print(
+                    f"{CLEAR}Currently at cell ({row}, {col}): {self._table[row][col]}", end='\r', flush=True)
                 flush_input()
             elif keyboard.is_pressed("esc"):
                 print("You have exited table modification.")
@@ -404,7 +432,7 @@ class Spreadsheet(Document):
     def save(self):
         for i in range(len(Document.saved_documents)):
             if Document.saved_documents[i].id == self.id:
-                Document.saved_documents[i] = self 
+                Document.saved_documents[i] = self
                 break
         else:
             Document.saved_documents.append(self)
@@ -423,7 +451,7 @@ class Spreadsheet(Document):
         for row in range(self._size):
             for column in range(self._size):
                 cell = self._table[row][column]
-                if len(cell) > 10: 
+                if len(cell) > 10:
                     short = textwrap.shorten(cell, width=10, placeholder="...")
                     print(f"|{short:<10}|", end=" ")
                 else:
@@ -431,7 +459,8 @@ class Spreadsheet(Document):
             print()
 
         while True:
-            choice = input("Do you want to navigate the cells? Y/N: ").strip().lower()
+            choice = input(
+                "Do you want to navigate the cells? Y/N: ").strip().lower()
             if choice == "y":
                 break
             elif choice == "n":
@@ -447,34 +476,39 @@ class Spreadsheet(Document):
             if keyboard.is_pressed("left"):
                 if col > 0:
                     col -= 1
-                    print(f"{CLEAR}Currently at cell ({row}, {col}): {self._table[row][col]}", end='\r', flush=True)
+                    print(
+                        f"{CLEAR}Currently at cell ({row}, {col}): {self._table[row][col]}", end='\r', flush=True)
                 while keyboard.is_pressed("left"):
                     pass
             elif keyboard.is_pressed("right"):
                 if col < self._size - 1:
                     col += 1
-                    print(f"{CLEAR}Currently at cell ({row}, {col}): {self._table[row][col]}", end='\r', flush=True)
+                    print(
+                        f"{CLEAR}Currently at cell ({row}, {col}): {self._table[row][col]}", end='\r', flush=True)
                 while keyboard.is_pressed("right"):
                     pass
             elif keyboard.is_pressed("up"):
                 if row > 0:
                     row -= 1
-                    print(f"{CLEAR}Currently at cell ({row}, {col}): {self._table[row][col]}", end='\r', flush=True)
+                    print(
+                        f"{CLEAR}Currently at cell ({row}, {col}): {self._table[row][col]}", end='\r', flush=True)
                 while keyboard.is_pressed("up"):
                     pass
             elif keyboard.is_pressed("down"):
                 if row < self._size - 1:
                     row += 1
-                    print(f"{CLEAR}Currently at cell ({row}, {col}): {self._table[row][col]}", end='\r', flush=True)
+                    print(
+                        f"{CLEAR}Currently at cell ({row}, {col}): {self._table[row][col]}", end='\r', flush=True)
                 while keyboard.is_pressed("down"):
                     pass
             elif keyboard.is_pressed("esc"):
                 print("You have exited cell navigation.")
                 break
 
+
 class Email(Document):
 
-    def __init__(self, title = None, author= None, s_from= None, r_to= None, text= "", subject= None, recipient= None, cc= None):
+    def __init__(self, title=None, author=None, s_from=None, r_to=None, text="", subject=None, recipient=None, cc=None):
         super().__init__(title, author, text)
         self._s_from = s_from
         self._r_to = r_to
@@ -531,11 +565,11 @@ class Email(Document):
             else:
                 clear_console()
                 print("Please enter a valid number.")
-    
+
     def save(self):
         for i in range(len(Document.saved_documents)):
             if Document.saved_documents[i].id == self.id:
-                Document.saved_documents[i] = self 
+                Document.saved_documents[i] = self
                 break
         else:
             Document.saved_documents.append(self)
@@ -555,7 +589,7 @@ class Email(Document):
             f"{self.text}\n\n"
             f"{'Sincerely,':>100}\n"
             f"{self.author:>100}"
-            )
+        )
         print("Press 'esc' to exit.")
         while True:
             if keyboard.is_pressed("esc"):
@@ -563,9 +597,10 @@ class Email(Document):
                     pass
                 break
 
+
 class Letter(Document):
 
-    def __init__(self, title = None, author = None, s_address = None, r_address = None, text = "", subject = None, recipient = None, includeDate = False):
+    def __init__(self, title=None, author=None, s_address=None, r_address=None, text="", subject=None, recipient=None, includeDate=False):
         super().__init__(title, author, text)
         self._s_address = s_address
         if includeDate:
@@ -625,7 +660,7 @@ class Letter(Document):
     def save(self):
         for i in range(len(Document.saved_documents)):
             if Document.saved_documents[i].id == self.id:
-                Document.saved_documents[i] = self 
+                Document.saved_documents[i] = self
                 break
         else:
             Document.saved_documents.append(self)
@@ -653,12 +688,13 @@ class Letter(Document):
                     pass
                 break
 
+
 def create_document():
     clear_console()
     print("Creating a Document...")
     time.sleep(1)
 
-    #None are placeholder objects
+    # None are placeholder objects
     docs = {1: Spreadsheet,
             2: Slideshow,
             3: Email,
@@ -666,7 +702,7 @@ def create_document():
             5: None,
             6: None,
             7: None
-    }
+            }
     instance = None
     while True:
         print("Documents do you want modify?")
@@ -697,31 +733,35 @@ def create_document():
             clear_console()
             print("Please enter a valid number.")
 
+
 def edit_document():
     clear_console()
     print("Editing a Document...")
     time.sleep(1)
     size = len(Document.saved_documents)
     index = 0
-    
+
     if size == 0:
         print("You have no documents to edit")
         return
-    
+
     print("Choose a document to edit.")
     print("Use arrow keys to navigate. Press 'esc' to exit. Press 'enter' to edit document.")
-    print(f"{CLEAR}Currently at Document {index}: {Document.saved_documents[index].title} Type: {type(Document.saved_documents[index]).__name__}", end='\r', flush=True)
+    print(
+        f"{CLEAR}Currently at Document {index}: {Document.saved_documents[index].title} Type: {type(Document.saved_documents[index]).__name__}", end='\r', flush=True)
     while True:
         if keyboard.is_pressed("left"):
             if index > 0:
                 index -= 1
-                print(f"{CLEAR}Currently at Document {index}: {Document.saved_documents[index].title} Type: {type(Document.saved_documents[index]).__name__}", end='\r', flush=True)
+                print(
+                    f"{CLEAR}Currently at Document {index}: {Document.saved_documents[index].title} Type: {type(Document.saved_documents[index]).__name__}", end='\r', flush=True)
                 while keyboard.is_pressed("left"):
                     pass
         elif keyboard.is_pressed("right"):
             if index < size - 1:
                 index += 1
-                print(f"{CLEAR}Currently at Document {index}: {Document.saved_documents[index].title} Type: {type(Document.saved_documents[index]).__name__}", end='\r', flush=True)
+                print(
+                    f"{CLEAR}Currently at Document {index}: {Document.saved_documents[index].title} Type: {type(Document.saved_documents[index]).__name__}", end='\r', flush=True)
                 while keyboard.is_pressed("right"):
                     pass
         elif keyboard.is_pressed("enter"):
@@ -736,9 +776,11 @@ def edit_document():
             flush_input()
             clear_console()
             Document.saved_documents[index].save()
-            print(f"{CLEAR}Currently at Document {index}: {Document.saved_documents[index].title} Type: {type(Document.saved_documents[index]).__name__}", end='\r', flush=True)
+            print(
+                f"{CLEAR}Currently at Document {index}: {Document.saved_documents[index].title} Type: {type(Document.saved_documents[index]).__name__}", end='\r', flush=True)
         elif keyboard.is_pressed("esc"):
-            return  
+            return
+
 
 def remove_document():
     clear_console()
@@ -750,23 +792,26 @@ def remove_document():
     if size == 0:
         print("You have no documents to remove")
         return
-    
+
     print("Choose a document to remove.")
     print("Use arrow keys to navigate. Press 'esc' to exit. Press 'enter' to remove document.")
-    print(f"{CLEAR}Currently at Document {index}: {Document.saved_documents[index].title} Type: {type(Document.saved_documents[index]).__name__}", end='\r', flush=True)
+    print(
+        f"{CLEAR}Currently at Document {index}: {Document.saved_documents[index].title} Type: {type(Document.saved_documents[index]).__name__}", end='\r', flush=True)
     while True:
         size = len(Document.saved_documents)
 
         if keyboard.is_pressed("left"):
             if index > 0:
                 index -= 1
-                print(f"{CLEAR}Currently at Document {index}: {Document.saved_documents[index].title} Type: {type(Document.saved_documents[index]).__name__}", end='\r', flush=True)
+                print(
+                    f"{CLEAR}Currently at Document {index}: {Document.saved_documents[index].title} Type: {type(Document.saved_documents[index]).__name__}", end='\r', flush=True)
                 while keyboard.is_pressed("left"):
                     pass
         elif keyboard.is_pressed("right"):
             if index < size - 1:
                 index += 1
-                print(f"{CLEAR}Currently at Document {index}: {Document.saved_documents[index].title} Type: {type(Document.saved_documents[index]).__name__}", end='\r', flush=True)
+                print(
+                    f"{CLEAR}Currently at Document {index}: {Document.saved_documents[index].title} Type: {type(Document.saved_documents[index]).__name__}", end='\r', flush=True)
                 while keyboard.is_pressed("right"):
                     pass
         elif keyboard.is_pressed("enter"):
@@ -786,12 +831,14 @@ def remove_document():
             clear_console()
             index -= 1
             if len(Document.saved_documents) > 0:
-                print(f"{CLEAR}Currently at Document {index}: {Document.saved_documents[index].title} Type: {type(Document.saved_documents[index]).__name__}", end='\r', flush=True)
+                print(
+                    f"{CLEAR}Currently at Document {index}: {Document.saved_documents[index].title} Type: {type(Document.saved_documents[index]).__name__}", end='\r', flush=True)
             else:
                 print("You have no documents")
                 return
         elif keyboard.is_pressed("esc"):
-            return  
+            return
+
 
 def read_document():
     clear_console()
@@ -799,25 +846,28 @@ def read_document():
     time.sleep(1)
     size = len(Document.saved_documents)
     index = 0
-    
+
     if size == 0:
         print("You have no documents to read")
         return
-    
+
     print("Choose a document to read.")
     print("Use arrow keys to navigate. Press 'esc' to exit. Press 'enter' to read document.")
-    print(f"{CLEAR}Currently at Document {index}: {Document.saved_documents[index].title} Type: {type(Document.saved_documents[index]).__name__}", end='\r', flush=True)
+    print(
+        f"{CLEAR}Currently at Document {index}: {Document.saved_documents[index].title} Type: {type(Document.saved_documents[index]).__name__}", end='\r', flush=True)
     while True:
         if keyboard.is_pressed("left"):
             if index > 0:
                 index -= 1
-                print(f"{CLEAR}Currently at Document {index}: {Document.saved_documents[index].title} Type: {type(Document.saved_documents[index]).__name__}", end='\r', flush=True)
+                print(
+                    f"{CLEAR}Currently at Document {index}: {Document.saved_documents[index].title} Type: {type(Document.saved_documents[index]).__name__}", end='\r', flush=True)
                 while keyboard.is_pressed("left"):
                     pass
         elif keyboard.is_pressed("right"):
             if index < size - 1:
                 index += 1
-                print(f"{CLEAR}Currently at Document {index}: {Document.saved_documents[index].title} Type: {type(Document.saved_documents[index]).__name__}", end='\r', flush=True)
+                print(
+                    f"{CLEAR}Currently at Document {index}: {Document.saved_documents[index].title} Type: {type(Document.saved_documents[index]).__name__}", end='\r', flush=True)
                 while keyboard.is_pressed("right"):
                     pass
         elif keyboard.is_pressed("enter"):
@@ -831,14 +881,16 @@ def read_document():
                 pass
             flush_input()
             clear_console()
-            print(f"{CLEAR}Currently at Document {index}: {Document.saved_documents[index].title} Type: {type(Document.saved_documents[index]).__name__}", end='\r', flush=True)
+            print(
+                f"{CLEAR}Currently at Document {index}: {Document.saved_documents[index].title} Type: {type(Document.saved_documents[index]).__name__}", end='\r', flush=True)
         elif keyboard.is_pressed("esc"):
-            return  
+            return
+
 
 def init():
     if not os.path.exists("files"):
         os.makedirs("files")
-    
+
     if os.path.exists("files/docs"):
         with open("files/docs", "rb") as f:
             try:
@@ -846,6 +898,7 @@ def init():
                 print("Documents loaded successfully.")
             except EOFError:
                 print("No data to load.")
+
 
 def handle_choice(choice):
     actions = {
@@ -866,10 +919,10 @@ def handle_choice(choice):
 
     return True
 
-# email_one = Letter("Random Title", 
+# email_one = Letter("Random Title",
 #                   "Codyaxe", "Batangas City", "Alangilan",
-#                   "I am testing if I can make a long line " 
-#                   "that would violate the principles of programming " 
+#                   "I am testing if I can make a long line "
+#                   "that would violate the principles of programming "
 #                   "making programmers have to scroll horizontally to "
 #                   "read the entire text", "A Message to a Classmate", "Aleckxa")
 # email_one.print()
@@ -880,7 +933,8 @@ def handle_choice(choice):
 # print("Test 1:")
 # Document.saved_documents[0].print()
 
-#For Implementing A Menu Option
+
+# For Implementing A Menu Option
 if __name__ == "__main__":
     init()
     while True:
