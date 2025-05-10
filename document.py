@@ -858,7 +858,7 @@ def handle_choice(choice):
     action = actions.get(choice)
     if action:
         action()
-    elif choice == 6:
+    elif choice == 5:
         return False
     else:
         clear_console()
