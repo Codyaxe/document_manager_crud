@@ -1,6 +1,17 @@
 # 📄 Document OOP Manager🗂️
 
-A robust object-oriented programming project for document management and manipulation.
+
+
+A simple object-oriented programming project for document management and manipulation.
+
+<p align="center">
+  <a href="https://git.io/typing-svg">
+    <img src="https://readme-typing-svg.herokuapp.com?font=Press+Start+2P&pause=1000&color=F7F7F7&center=true&width=435&lines=OOP+Document+Manager;Create...+Read...;Modify...+Remove..." alt="Typing SVG" />
+  </a>
+</p>
+<p align="center">
+  <img src="https://media0.giphy.com/media/v1.Y2lkPTc5MGI3NjExbDNwbjcxbTU1MTlvaTZkM293czZqYTdpNXdzaWVicjg2emZqNDM1cSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/heIX5HfWgEYlW/giphy.gif" alt="GIF" />
+</p>
 
 ## 👥 Team Members
 - Maraya, Vince Anthony L.
@@ -10,7 +21,7 @@ A robust object-oriented programming project for document management and manipul
 
 ---
 
-## 📋 Project Overview
+## 📋 Project Overview (Short description of the system)
 This OOP project implements a document management system with a focus on object-oriented design principles. The system allows users to create documents (Create), read documents (Read), remove documents (Remove), and modify documents (Modify).
 
 ### ✨ Key Features
@@ -34,7 +45,7 @@ Each Document objects have the following methods:
 
 ---
 
-## ▶️ Installation & Usage 
+## ▶️ Installation & Usage (How to run the program)
 
 ### Setup Instructions
 1. Clone the repository:
@@ -57,4 +68,4 @@ Each Document objects have the following methods:
 ---
 
 ## 👏 Acknowledgements
-- Course instructors and classmates for feedback and suggestions
+- We would like to thank our course instructor Asst. Prof. John Richared Esguerra
