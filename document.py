@@ -165,7 +165,7 @@ class Slideshow(Document):
                 clear_console()
                 print("You chose to modify all slides. ")
                 print(
-                    "Use arrow keys to navigate. Press 'esc' to exit. Press 'enter' to edit cell.")
+                    "Use arrow keys to navigate. Press 'esc' to exit. Press 'enter' to edit the slide.")
                 print(
                     f"{CLEAR}Currently at Slide {index}: {self.slides[index]}", end='\r', flush=True)
                 while True:
@@ -209,7 +209,7 @@ class Slideshow(Document):
                     print(f"You chose to modify slides {start} to {end}.")
                     index = start
                     print(
-                        "Use arrow keys to navigate. Press 'esc' to exit. Press 'enter' to edit cell.")
+                        "Use arrow keys to navigate. Press 'esc' to exit. Press 'enter' to edit the slide.")
                     print(
                         f"{CLEAR}Currently at Slide {index}: {self.slides[index]}", end='\r', flush=True)
                     while True:
