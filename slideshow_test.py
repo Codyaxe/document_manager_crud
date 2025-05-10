@@ -31,7 +31,7 @@ def test_slideshow_save_and_structure():
         loaded_docs = pickle.load(f)
         print(loaded_docs)
         assert ss in loaded_docs
-        assert isinstance(loaded_docs[-1], SlideShow)
+        assert isinstance(loaded_docs[-1], Slideshow)
 
     print("SlideShow test passed.")
 
