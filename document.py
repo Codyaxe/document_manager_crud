@@ -124,21 +124,19 @@ class SlideShow(Document):
             print("Press 4 to Modify Slides")
             print("Press 5 to Exit")
             while True:
-                try:
-                    choice = int(input("Choose: "))
-                    if choice == 4:
-                        break
-                    if choice == 5:
-                        return
-                    if choice in options:
-                        attr_name = options[choice]
-                        new_value = input(f"Enter the new {attr_name}: ")
-                        setattr(self, attr_name, new_value)
-                        break
-                    else:
-                        print("Invalid choice.")
-                except ValueError:
-                    print("Please enter a valid number.")
+                choice = int(input("Choose: "))
+                if choice == 4:
+                    break
+                if choice == 5:
+                    return
+                if choice in options:
+                    attr_name = options[choice]
+                    new_value = input(f"Enter the new {attr_name}: ")
+                    setattr(self, attr_name, new_value)
+                    break
+                else:
+                    print("Invalid choice. Please enter a valid number!")
+
         print("Modifying slides...")
         time.sleep(1)
         index = 0
@@ -198,7 +196,7 @@ class SlideShow(Document):
                                 while keyboard.is_pressed("right"):
                                     pass
                             elif keyboard.is_pressed("esc"):
-                                print("You have exited editing the slideshow")
+                                print("You have exited slideshow modification")
                                 return  
                 else:
                     print("Invalid range format. Use the form x-y (e.g., 2-5).")
@@ -289,8 +287,71 @@ class Spreadsheet(Document):
                 print("Please enter a valid input")
 
     def modify(self, onlyTable = False):
-        #will be implemented next day
-        pass
+        if not onlyTable:
+            options = {
+                1: "title",
+                2: "author",
+                3: "text",
+            }
+            print("Which fields do you want to modify?")
+            print("Press 1 to Modify Title")
+            print("Press 2 to Modify Author")
+            print("Press 3 to Modify Description")
+            print("Press 4 to Modify Table")
+            print("Press 5 to Exit")
+            while True:
+                choice = int(input("Choose: "))
+                if choice == 4:
+                    break
+                if choice == 5:
+                    return
+                if choice in options:
+                    attr_name = options[choice]
+                    new_value = input(f"Enter the new {attr_name}: ")
+                    setattr(self, attr_name, new_value)
+                    break
+                else:
+                    print("Invalid choice. Please enter a valid number!")
+
+        print("Modifying table...")
+        time.sleep(1)
+        row, col = 0, 0
+        print("Use arrow keys to navigate. Press 'esc' to exit. Press 'enter' to edit cell.")
+        print(f"Currently at cell ({row}, {col}): {self._table[row][col]}")
+        while True:
+            if keyboard.is_pressed("left"):
+                if col > 0:
+                    col -= 1
+                    print(f"{CLEAR}Currently at cell ({row}, {col}): {self._table[row][col]}")
+                while keyboard.is_pressed("left"):
+                    pass
+            elif keyboard.is_pressed("right"):
+                if col < self._size - 1:
+                    col += 1
+                    print(f"{CLEAR}Currently at cell ({row}, {col}): {self._table[row][col]}")
+                while keyboard.is_pressed("right"):
+                    pass
+            elif keyboard.is_pressed("up"):
+                if row > 0:
+                    row -= 1
+                    print(f"{CLEAR}Currently at cell ({row}, {col}): {self._table[row][col]}")
+                while keyboard.is_pressed("up"):
+                    pass
+            elif keyboard.is_pressed("down"):
+                if row < self._size - 1:
+                    row += 1
+                    print(f"{CLEAR}Currently at cell ({row}, {col}): {self._table[row][col]}")
+                while keyboard.is_pressed("down"):
+                    pass
+            elif keyboard.is_pressed("enter"):
+                new_content = input(f"Enter new content for cell ({row}, {col}): ")
+                self._table[row][col] = new_content
+                print(f"{CLEAR}Cell ({row}, {col}) updated to: {self._table[row][col]}")
+                while keyboard.is_pressed("enter"):
+                    pass
+            elif keyboard.is_pressed("esc"):
+                print("You have exited table modification.")
+                break
 
     def save(self):
         Document.saved_documents.append(self)
@@ -315,6 +376,48 @@ class Spreadsheet(Document):
                 else:
                     print(f"|{cell:<10}|", end="")
             print()
+
+        while True:
+            choice = input("Do you want to navigate the cells? Y/N")
+            if choice == "Y" or choice == "y":
+                break
+            elif choice == "N" or choice == "n":
+                return
+            else:
+                print("Please enter a valid input")
+
+        print("Use arrow keys to navigate. Press 'esc' to exit.")
+        row, col = 0, 0
+        print(f"Currently at cell ({row}, {col}): {self._table[row][col]}")
+        while True:
+            if keyboard.is_pressed("left"):
+                if col > 0:
+                    col -= 1
+                    print(f"{CLEAR}Currently at cell ({row}, {col}): {self._table[row][col]}")
+                while keyboard.is_pressed("left"):
+                    pass
+            elif keyboard.is_pressed("right"):
+                if col < self._size - 1:
+                    col += 1
+                    print(f"{CLEAR}Currently at cell ({row}, {col}): {self._table[row][col]}")
+                while keyboard.is_pressed("right"):
+                    pass
+            elif keyboard.is_pressed("up"):
+                if row > 0:
+                    row -= 1
+                    print(f"{CLEAR}Currently at cell ({row}, {col}): {self._table[row][col]}")
+                while keyboard.is_pressed("up"):
+                    pass
+            elif keyboard.is_pressed("down"):
+                if row < self._size - 1:
+                    row += 1
+                    print(f"{CLEAR}Currently at cell ({row}, {col}): {self._table[row][col]}")
+                while keyboard.is_pressed("down"):
+                    pass
+            elif keyboard.is_pressed("esc"):
+                print("You have exited cell navigation.")
+                break
+
 
     def share(self):
         print("Your Spreadsheet has been shared.")
@@ -351,18 +454,49 @@ class Email(Document):
         self._cc = cc
 
     def create(self):
-        self.title = input("Enter the email title: ")
-        self.author = input("Enter the email author: ")
-        self.text = input("Enter the email text: ")
+        self.title = input("Enter the email's title: ")
+        self.author = input("Enter the email's author: ")
+        self.text = input("Enter the email's content: ")
         self._s_from = input("Enter the sender's email: ")
         self._r_to = input("Enter the recipient's email: ")
-        self._subject = input("Enter the email subject: ")
+        self._subject = input("Enter the email's subject: ")
         self._recipient = input("Enter the recipient's name: ")
         self._cc = input("Enter the CC (optional): ")
 
-
     def modify(self):
-        pass
+        fields = {
+            1: ("title", "Enter the email's title: "),
+            2: ("author", "Enter the email's author: "),
+            3: ("text", "Enter the email's content: "),
+            4: ("_s_from", "Enter the sender's email: "),
+            5: ("_r_to", "Enter the recipient's email: "),
+            6: ("_subject", "Enter the email's subject: "),
+            7: ("_recipient", "Enter the recipient's name: "),
+            8: ("_cc", "Enter the CC (optional): ")
+        }
+        while True:
+            print("Which fields do you want to modify?")
+            print("Enter 1 to change email's title")
+            print("Enter 2 to change email's author")
+            print("Enter 3 to change email's content")
+            print("Enter 4 to change sender's email")
+            print("Enter 5 to change recipient's email")
+            print("Enter 6 to change email's subject")
+            print("Enter 7 to change recipient's name")
+            print("Enter 8 to change CC")
+            print("Enter 9 to exit")
+            choice = input("Choose: ")
+            if choice.isdigit():
+                num = int(choice)
+                if num == 9:
+                    break
+                elif num in fields:
+                    attr, prompt = fields[num]
+                    setattr(self, attr, input(prompt))
+                else:
+                    print("Invalid choice.")
+            else:
+                print("Please enter a valid number.")
     
     def save(self):
         Document.saved_documents.append(self)
@@ -400,17 +534,47 @@ class Letter(Document):
         self._recipient = recipient
 
     def create(self):
-        self.title = input("Enter the letter title: ")
-        self.author = input("Enter the letter author: ")
-        self.text = input("Enter the letter text: ")
+        self.title = input("Enter the letter's title: ")
+        self.author = input("Enter the letter's author: ")
+        self.text = input("Enter the letter's content: ")
         self._s_address = input("Enter the sender's address: ")
         self._r_address = input("Enter the recipient's address: ")
-        self._subject = input("Enter the subject of the letter: ")
+        self._subject = input("Enter the letter's subject: ")
         self._recipient = input("Enter the recipient's name: ")
         self._date = datetime.date.today()
 
     def modify(self):
-        pass
+        fields = {
+            1: ("title", "Enter the letter's title: "),
+            2: ("author", "Enter the letter's author: "),
+            3: ("text", "Enter the letter's content: "),
+            4: ("_s_address", "Enter the sender's address: "),
+            5: ("_r_address", "Enter the recipient's address: "),
+            6: ("_subject", "Enter the letter's subject: "),
+            7: ("_recipient", "Enter the recipient's name: "),
+        }
+        while True:
+            print("Which fields do you want to modify?")
+            print("Enter 1 to change letter's title")
+            print("Enter 2 to change letter's author")
+            print("Enter 3 to change letter's content")
+            print("Enter 4 to change sender's address")
+            print("Enter 5 to change recipient's address")
+            print("Enter 6 to change letter's subject")
+            print("Enter 7 to change recipient's name")
+            print("Enter 8 to exit")
+            choice = input("Choose: ")
+            if choice.isdigit():
+                num = int(choice)
+                if num == 8:
+                    break
+                elif num in fields:
+                    attr, prompt = fields[num]
+                    setattr(self, attr, input(prompt))
+                else:
+                    print("Invalid choice.")
+            else:
+                print("Please enter a valid number.")
 
     def save(self):
         Document.saved_documents.append(self)
