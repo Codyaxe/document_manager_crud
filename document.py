@@ -705,7 +705,7 @@ def create_document():
             }
     instance = None
     while True:
-        print("Which documents do you want modify?")
+        print("Which type of documents do you want create?")
         print("Enter 1 to create Spreadsheet")
         print("Enter 2 to create Slideshow")
         print("Enter 3 to create Email")
