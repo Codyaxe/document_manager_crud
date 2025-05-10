@@ -69,7 +69,7 @@ class Document(ABC):
     def print(self):
         pass
 
-class SlideShow(Document):
+class Slideshow(Document):
 
     def __init__(self, title = None, author = None, text = "", size = None):
         super().__init__(title, author, text)
@@ -660,7 +660,7 @@ def create_document():
 
     #None are placeholder objects
     docs = {1: Spreadsheet,
-            2: SlideShow,
+            2: Slideshow,
             3: Email,
             4: Letter,
             5: None,
