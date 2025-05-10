@@ -1,4 +1,5 @@
 from abc import ABC, abstractmethod
+from auxilliary_functions import clear_console, flush_input
 import os
 import pickle
 import textwrap
@@ -89,9 +90,9 @@ class SlideShow(Document):
                 self._slides[i] = content[i]
 
     def create(self):
-        self.title = input("Enter the spreadsheet title: ")
-        self.author = input("Enter the spreadsheet author: ")
-        self.text = input("Enter the spreadsheet description: ")
+        self.title = input("Enter the slideshow's title: ")
+        self.author = input("Enter the slideshow's author: ")
+        self.text = input("Enter the slideshow's description: ")
         while True:
             self._size = input("Enter the number of slides in the slideshow: ")
             if self._size.isdigit():
@@ -99,15 +100,18 @@ class SlideShow(Document):
                 self._slides = ["" for slide in range(self._size)]
                 break
             else:
+                clear_console()
                 print("Please enter a valid number.")
         while True:
-            choice = input("Do you want to modify the slides now? Y/N")
-            if choice == "Y" or choice == "y":
+            choice = input("Do you want to modify the slides now? Y/N: ").strip().lower()
+            if choice == "y":
+                clear_console()
                 self.modify(onlySlides = True)
                 break
-            elif choice == "N" or choice == "n":
+            elif choice == "n":
                 break
             else:
+                clear_console()
                 print("Please enter a valid input")
 
     def modify(self, onlySlides = False):
@@ -124,19 +128,25 @@ class SlideShow(Document):
             print("Press 4 to Modify Slides")
             print("Press 5 to Exit")
             while True:
-                choice = int(input("Choose: "))
-                if choice == 4:
-                    break
-                if choice == 5:
-                    return
-                if choice in options:
-                    attr_name = options[choice]
-                    new_value = input(f"Enter the new {attr_name}: ")
-                    setattr(self, attr_name, new_value)
-                    break
+                choice = input("Choose: ")
+                if choice.isdigit():
+                    num = int(choice)
+                    if num == 4:
+                        break
+                    if num == 5:
+                        return
+                    if num in options:
+                        attr_name = options[num]
+                        new_value = input(f"Enter the new {attr_name}: ")
+                        setattr(self, attr_name, new_value)
+                        break
+                    else:
+                        clear_console()
+                        print("Invalid choice.")
                 else:
-                    print("Invalid choice. Please enter a valid number!")
-
+                    clear_console()
+                    print("Please enter a valid number!")
+        clear_console()
         print("Modifying slides...")
         time.sleep(1)
         index = 0
@@ -147,66 +157,86 @@ class SlideShow(Document):
                 "one slide via x, or all using 'a': "
             )
             if choice == "a":
-                print("You chose to modify all slides. Press the arrow keys to navigate. Press 'esc' to exit.")
+                clear_console()
+                print("You chose to modify all slides. ")
+                print("Use arrow keys to navigate. Press 'esc' to exit. Press 'enter' to edit cell.")
+                print(f"{CLEAR}Currently at Slide {index}: {self.slides[index]}", end='\r', flush=True)
                 while True:
-                    print(f"You are in slide {index}:")
-                    self._slides[index] = input("Enter new content: ")
-                    print("Slide is saved! Press the arrow keys to navigate.")
-                    while True:
-                        if keyboard.is_pressed("left"):
-                            if index > 0:
-                                index -= 1
-                                break  
-                            while keyboard.is_pressed("left"):
-                                pass
-                        elif keyboard.is_pressed("right"):
-                            if index < self._size - 1:
-                                index += 1
-                                break
-                            while keyboard.is_pressed("right"):
-                                pass
-                        elif keyboard.is_pressed("esc"):
-                            print("You have exited editing the slideshow")
-                            return  
+                    if keyboard.is_pressed("left"):
+                        if index > 0:
+                            index -= 1
+                            print(f"{CLEAR}Currently at Slide {index}: {self.slides[index]}", end='\r', flush=True)
+                        while keyboard.is_pressed("left"):
+                            pass
+                    elif keyboard.is_pressed("right"):
+                        if index < self._size - 1:
+                            index += 1
+                            print(f"{CLEAR}Currently at Slide {index}: {self.slides[index]}", end='\r', flush=True)
+                        while keyboard.is_pressed("right"):
+                            pass
+                    elif keyboard.is_pressed("enter"):
+                        print(CLEAR, end='\r', flush=True)
+                        while keyboard.is_pressed("enter"):
+                            pass
+                        flush_input()
+                        self._slides[index] = input("Enter new content: ")
+                        while keyboard.is_pressed("enter"):
+                            pass
+                        print(f"{CLEAR}Currently at Slide {index}: {self.slides[index]}", end='\r', flush=True)
+                    elif keyboard.is_pressed("esc"):
+                        print("You have exited editing the slideshow")
+                        return  
 
             elif "-" in choice:
+                clear_console()
                 parts = choice.split("-")
                 if len(parts) == 2 and all(part.isdigit() for part in parts):
                     start, end = map(int, parts)
-                    if start < 0 or end > self._size or start > end:
+                    if start < 0 or end > self._size - 1 or start > end:
                         print(f"Invalid range. Start must be <= end, and both must be between 0 and {self._size - 1}.")
                         continue
                     print(f"You chose to modify slides {start} to {end}.")
                     index = start
+                    print("Use arrow keys to navigate. Press 'esc' to exit. Press 'enter' to edit cell.")
+                    print(f"{CLEAR}Currently at Slide {index}: {self.slides[index]}", end='\r', flush=True)
                     while True:
-                        print(f"You are in slide {index}:")
-                        self._slides[index] = input("Enter new content: ")
-                        print("Slide is saved! Press the arrow keys to navigate.")
-                        while True:
-                            if keyboard.is_pressed("left"):
-                                if index > start:
-                                    index -= 1
-                                    break
-                                while keyboard.is_pressed("left"):
+                        if keyboard.is_pressed("left"):
+                            if index > start:
+                                index -= 1
+                                print(f"{CLEAR}Currently at Slide {index}: {self.slides[index]}", end='\r', flush=True)
+                            while keyboard.is_pressed("left"):
                                     pass
-                            elif keyboard.is_pressed("right"):
-                                if index < end - 1:
-                                    index += 1
-                                    break
-                                while keyboard.is_pressed("right"):
-                                    pass
-                            elif keyboard.is_pressed("esc"):
-                                print("You have exited slideshow modification")
-                                return  
+                        elif keyboard.is_pressed("right"):
+                            if index < end - 1:
+                                index += 1
+                                print(f"{CLEAR}Currently at Slide {index}: {self.slides[index]}", end='\r', flush=True)
+                            while keyboard.is_pressed("right"):
+                                pass
+                        elif keyboard.is_pressed("enter"):
+                            print(CLEAR, end='\r', flush=True)
+                            while keyboard.is_pressed("enter"):
+                                pass
+                            flush_input()
+                            print("Enter new content: ", end='', flush=True)
+                            self._slides[index] = input()
+                            while keyboard.is_pressed("enter"):
+                                pass
+                            print(f"{CLEAR}Currently at Slide {index}: {self.slides[index]}", end='\r', flush=True)
+                        elif keyboard.is_pressed("esc"):
+                            print("You have exited slideshow modification")
+                            return  
                 else:
+                    clear_console()
                     print("Invalid range format. Use the form x-y (e.g., 2-5).")
 
             elif choice.isdigit():
+                clear_console()
                 slide_num = int(choice)
                 print(f"You chose to modify slide {slide_num}.")
                 self._slides[index] = input("Enter new content: ")
                 break
             else:
+                clear_console()
                 print("Please input a valid option!")
             
     def save(self):
@@ -214,7 +244,7 @@ class SlideShow(Document):
 
         with open("files/docs", "wb") as f:
             pickle.dump(Document.saved_documents, f)
-        print("Your Powerpoint Presentation has been saved.")
+        print("Your Slideshow has been saved.")
 
     def print(self):
         index = 0
@@ -277,13 +307,14 @@ class Spreadsheet(Document):
             else:
                 print("Please enter a valid number.")
         while True:
-            choice = input("Do you want to modify the table now? Y/N")
-            if choice == "Y" or choice == "y":
+            choice = input("Do you want to modify the table now? Y/N: ").strip().lower()
+            if choice == "y":
                 self.modify(onlyTable = True)
                 break
-            elif choice == "N" or choice == "n":
+            elif choice == "n":
                 break
             else:
+                clear_console()
                 print("Please enter a valid input")
 
     def modify(self, onlyTable = False):
@@ -300,55 +331,66 @@ class Spreadsheet(Document):
             print("Press 4 to Modify Table")
             print("Press 5 to Exit")
             while True:
-                choice = int(input("Choose: "))
-                if choice == 4:
-                    break
-                if choice == 5:
-                    return
-                if choice in options:
-                    attr_name = options[choice]
-                    new_value = input(f"Enter the new {attr_name}: ")
-                    setattr(self, attr_name, new_value)
-                    break
+                choice = input("Choose: ")
+                if choice.isdigit():
+                    num = int(choice)
+                    if num == 4:
+                        break
+                    if num == 5:
+                        return
+                    if num in options:
+                        attr_name = options[num]
+                        new_value = input(f"Enter the new {attr_name}: ")
+                        setattr(self, attr_name, new_value)
+                        break
+                    else:
+                        clear_console()
+                        print("Invalid choice.")
                 else:
-                    print("Invalid choice. Please enter a valid number!")
+                    clear_console()
+                    print("Please enter a valid number.")
 
         print("Modifying table...")
         time.sleep(1)
         row, col = 0, 0
         print("Use arrow keys to navigate. Press 'esc' to exit. Press 'enter' to edit cell.")
-        print(f"Currently at cell ({row}, {col}): {self._table[row][col]}")
+        print(f"{CLEAR}Currently at cell ({row}, {col}): {self._table[row][col]}", end='\r', flush=True)
         while True:
             if keyboard.is_pressed("left"):
                 if col > 0:
                     col -= 1
-                    print(f"{CLEAR}Currently at cell ({row}, {col}): {self._table[row][col]}")
+                    print(f"{CLEAR}Currently at cell ({row}, {col}): {self._table[row][col]}", end='\r', flush=True)
                 while keyboard.is_pressed("left"):
                     pass
             elif keyboard.is_pressed("right"):
                 if col < self._size - 1:
                     col += 1
-                    print(f"{CLEAR}Currently at cell ({row}, {col}): {self._table[row][col]}")
+                    print(f"{CLEAR}Currently at cell ({row}, {col}): {self._table[row][col]}", end='\r', flush=True)
                 while keyboard.is_pressed("right"):
                     pass
             elif keyboard.is_pressed("up"):
                 if row > 0:
                     row -= 1
-                    print(f"{CLEAR}Currently at cell ({row}, {col}): {self._table[row][col]}")
+                    print(f"{CLEAR}Currently at cell ({row}, {col}): {self._table[row][col]}", end='\r', flush=True)
                 while keyboard.is_pressed("up"):
                     pass
             elif keyboard.is_pressed("down"):
                 if row < self._size - 1:
                     row += 1
-                    print(f"{CLEAR}Currently at cell ({row}, {col}): {self._table[row][col]}")
+                    print(f"{CLEAR}Currently at cell ({row}, {col}): {self._table[row][col]}", end='\r', flush=True)
                 while keyboard.is_pressed("down"):
                     pass
             elif keyboard.is_pressed("enter"):
-                new_content = input(f"Enter new content for cell ({row}, {col}): ")
-                self._table[row][col] = new_content
-                print(f"{CLEAR}Cell ({row}, {col}) updated to: {self._table[row][col]}")
+                print(CLEAR, end='\r', flush=True)
                 while keyboard.is_pressed("enter"):
                     pass
+                flush_input()
+                new_content = input(f"Enter new content for cell ({row}, {col}): ")
+                while keyboard.is_pressed("enter"):
+                    pass
+                self._table[row][col] = new_content
+                print(f"{CLEAR}Currently at cell ({row}, {col}): {self._table[row][col]}", end='\r', flush=True)
+                flush_input()
             elif keyboard.is_pressed("esc"):
                 print("You have exited table modification.")
                 break
@@ -378,12 +420,13 @@ class Spreadsheet(Document):
             print()
 
         while True:
-            choice = input("Do you want to navigate the cells? Y/N")
-            if choice == "Y" or choice == "y":
+            choice = input("Do you want to navigate the cells? Y/N").strip().lower()
+            if choice == "y":
                 break
-            elif choice == "N" or choice == "n":
+            elif choice == "n":
                 return
             else:
+                clear_console()
                 print("Please enter a valid input")
 
         print("Use arrow keys to navigate. Press 'esc' to exit.")
@@ -393,25 +436,25 @@ class Spreadsheet(Document):
             if keyboard.is_pressed("left"):
                 if col > 0:
                     col -= 1
-                    print(f"{CLEAR}Currently at cell ({row}, {col}): {self._table[row][col]}")
+                    print(f"{CLEAR}Currently at cell ({row}, {col}): {self._table[row][col]}", end='\r', flush=True)
                 while keyboard.is_pressed("left"):
                     pass
             elif keyboard.is_pressed("right"):
                 if col < self._size - 1:
                     col += 1
-                    print(f"{CLEAR}Currently at cell ({row}, {col}): {self._table[row][col]}")
+                    print(f"{CLEAR}Currently at cell ({row}, {col}): {self._table[row][col]}", end='\r', flush=True)
                 while keyboard.is_pressed("right"):
                     pass
             elif keyboard.is_pressed("up"):
                 if row > 0:
                     row -= 1
-                    print(f"{CLEAR}Currently at cell ({row}, {col}): {self._table[row][col]}")
+                    print(f"{CLEAR}Currently at cell ({row}, {col}): {self._table[row][col]}", end='\r', flush=True)
                 while keyboard.is_pressed("up"):
                     pass
             elif keyboard.is_pressed("down"):
                 if row < self._size - 1:
                     row += 1
-                    print(f"{CLEAR}Currently at cell ({row}, {col}): {self._table[row][col]}")
+                    print(f"{CLEAR}Currently at cell ({row}, {col}): {self._table[row][col]}", end='\r', flush=True)
                 while keyboard.is_pressed("down"):
                     pass
             elif keyboard.is_pressed("esc"):
@@ -494,8 +537,10 @@ class Email(Document):
                     attr, prompt = fields[num]
                     setattr(self, attr, input(prompt))
                 else:
+                    clear_console()
                     print("Invalid choice.")
             else:
+                clear_console()
                 print("Please enter a valid number.")
     
     def save(self):
@@ -572,8 +617,10 @@ class Letter(Document):
                     attr, prompt = fields[num]
                     setattr(self, attr, input(prompt))
                 else:
+                    clear_console()
                     print("Invalid choice.")
             else:
+                clear_console()
                 print("Please enter a valid number.")
 
     def save(self):
@@ -600,7 +647,48 @@ class Letter(Document):
         print("Your Letter has been shared.")
 
 def create_document():
+    clear_console()
     print("Creating a Document...")
+    time.sleep(0.1)
+
+    docs = {1: Spreadsheet,
+            2: SlideShow,
+            3: Email,
+            4: Letter,
+            5: None,
+            6: None,
+            7: None
+    }
+    instance = None
+    while True:
+        print("Documents do you want modify?")
+        print("Enter 1 to create Spreadsheet")
+        print("Enter 2 to create Slideshow")
+        print("Enter 3 to change Email")
+        print("Enter 4 to change Letter")
+        print("Enter 5 to change _____")
+        print("Enter 6 to change _____")
+        print("Enter 7 to change _____")
+        print("Enter 8 to exit")
+        choice = input("Choose: ")
+        if choice.isdigit():
+            num = int(choice)
+            if num == 8:
+                break
+            elif num in docs and docs[num] is not None:
+                instance = docs[num]()
+                clear_console()
+                instance.create()
+                clear_console()
+                instance.save()
+                break
+            else:
+                clear_console()
+                print("Invalid choice.")
+        else:
+            clear_console()
+            print("Please enter a valid number.")
+
 
 def share_document():
     pass
@@ -628,19 +716,20 @@ def init():
 
 def handle_choice(choice):
     actions = {
-        0: read_document,
-        1: create_document,
-        2: share_document,
-        3: edit_document,
-        4: remove_document
+        1: read_document,
+        2: create_document,
+        3: share_document,
+        4: edit_document,
+        5: remove_document
     }
 
     action = actions.get(choice)
     if action:
         action()
-    elif choice == 5:
+    elif choice == 6:
         return False
     else:
+        clear_console()
         print("Invalid Choice!")
 
     return True
@@ -661,8 +750,13 @@ init()
 
 #For Implementing A Menu Option
 if __name__ == "__main__":
-    print("Welcome to the Document Manager. What do you want to do today?")
     while True:
+        print("Welcome to the Document Manager. What do you want to do today?")
+        print("Enter 1 to Read Documents")
+        print("Enter 2 to Create Documents")
+        print("Enter 3 to Share Documents")
+        print("Enter 4 to Modify Documents")
+        print("Enter 5 to Remove Documents")
         choice = int(input("Enter your choice: "))
         if not handle_choice(choice):
             break
