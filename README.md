@@ -22,14 +22,16 @@ A simple object-oriented programming project for document management and manipul
 ---
 
 ## 📋 Project Overview (Short description of the system)
-This OOP project implements a document management system with a focus on object-oriented design principles. The system allows users to create documents (Create), read documents (Read), remove documents (Remove), and modify documents (Modify).
+This project is a Document Management System (DMS) designed using object-oriented programming (OOP) principles such as encapsulation, abstraction, inheritance, and polymorphism. The system allows users to manage digital documents through core functionalities like creation, printing, modification, and saving.
+
+It provides a simple yet extendable architecture that enables users to interact with Document objects in an intuitive and consistent manner.
 
 ### ✨ Key Features
 Each Document objects have the following methods:
-- 📑 **Create Method**: Creates a document on the system
-- ✏️ **Print Method**: Prints the document to the console
-- 🛠️ **Modify Method**: Modifies the document on the system
-- 📤 **Save Method**: Saves the document to a file on the system (Automatically Handled)
+- 📑 **Create Method**: Initializes and stores a new document in the system with user-defined content and metadata
+- ✏️ **Print Method**: Displays the current content of the document in a readable format via the console
+- 🛠️ **Modify Method**: Allows users to edit or update the content of an existing document
+- 📤 **Save Method**: Automatically handles saving the document to a file or persistent storage, ensuring no data is lost between sessions
 
 ---
 
