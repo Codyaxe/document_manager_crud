@@ -69,10 +69,6 @@ class Document(ABC):
     def print(self):
         pass
 
-    @abstractmethod
-    def share(self):
-        pass
-
 class SlideShow(Document):
 
     def __init__(self, title = None, author = None, text = "", size = None):
@@ -281,9 +277,6 @@ class SlideShow(Document):
             elif keyboard.is_pressed("esc"):
                 print("You have exited the slideshow")
                 break
-            
-    def share(self):
-        print("Your SlideShow has been shared.")
 
 class Spreadsheet(Document):
     
@@ -479,31 +472,6 @@ class Spreadsheet(Document):
                 print("You have exited cell navigation.")
                 break
 
-
-    def share(self):
-        print("Your Spreadsheet has been shared.")
-
-#Should I make a subclass of Reports?
-class Report(Document):
-
-    def __init__(self):
-        pass
-
-    def create(self):
-        pass
-
-    def modify(self):
-        pass
-
-    def save(self):
-        pass
-
-    def print(self):
-        pass
-
-    def share(self):
-        pass
-
 class Email(Document):
 
     def __init__(self, title = None, author= None, s_from= None, r_to= None, text= "", subject= None, recipient= None, cc= None):
@@ -595,10 +563,6 @@ class Email(Document):
                     pass
                 break
 
-    def share(self):
-        print("Your Email has been shared.")
-
-
 class Letter(Document):
 
     def __init__(self, title = None, author = None, s_address = None, r_address = None, text = "", subject = None, recipient = None, includeDate = False):
@@ -689,9 +653,6 @@ class Letter(Document):
                     pass
                 break
 
-    def share(self):
-        print("Your Letter has been shared.")
-
 def create_document():
     clear_console()
     print("Creating a Document...")
@@ -735,10 +696,6 @@ def create_document():
         else:
             clear_console()
             print("Please enter a valid number.")
-
-
-def share_document():
-    pass
 
 def edit_document():
     clear_console()
@@ -894,9 +851,8 @@ def handle_choice(choice):
     actions = {
         1: read_document,
         2: create_document,
-        3: share_document,
-        4: edit_document,
-        5: remove_document
+        3: edit_document,
+        4: remove_document
     }
 
     action = actions.get(choice)
@@ -931,10 +887,9 @@ if __name__ == "__main__":
         print("Welcome to the Document Manager. What do you want to do today?")
         print("Enter 1 to Read Documents")
         print("Enter 2 to Create Documents")
-        print("Enter 3 to Share Documents")
-        print("Enter 4 to Modify Documents")
-        print("Enter 5 to Remove Documents")
-        print("Enter 6 to Exit")
+        print("Enter 3 to Modify Documents")
+        print("Enter 4 to Remove Documents")
+        print("Enter 5 to Exit")
         choice = int(input("Enter your choice: "))
         if not handle_choice(choice):
             break
