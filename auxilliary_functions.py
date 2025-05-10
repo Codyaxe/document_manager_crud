@@ -1,8 +1,8 @@
 import os
 import platform
 
-def blinking_dots():
-    pass
+# def blinking_dots():
+#     pass
 
 def clear_console():
     os.system('cls' if os.name == 'nt' else 'clear')
