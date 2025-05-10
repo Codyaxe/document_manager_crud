@@ -15,7 +15,7 @@ A simple object-oriented programming project for document management and manipul
 
 ## 👥 Team Members
 - Maraya, Vince Anthony L.
-- Butuin, Jan Lawrence L.
+- Bituin, Jan Lawrence L.
 - Bugtong, Aleckxa Reign D.
 - Mendoza, Ched Reiner T.
 
@@ -68,4 +68,4 @@ Each Document objects have the following methods:
 ---
 
 ## 👏 Acknowledgements
-- We would like to thank our course instructor Asst. Prof. John Richared Esguerra
+- We would like to sincerely thank our course instructor, Assistant Professor John Richard Esguerra for his guidance, support, and dedication throughout the course of this program. His thoughtful mentorship, clear instruction, and patience have been instrumental in helping us navigate challenges and deepen our understanding. We are truly grateful for the time and effort he invested in our learning.
