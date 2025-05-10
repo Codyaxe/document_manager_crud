@@ -17,7 +17,7 @@ This OOP project implements a document management system with a focus on object-
 Each Document objects have the following methods:
 - 📑 **Create Method**: Creates a document on the system
 - ✏️ **Print Method**: Prints the document to the console
-- ✏️ **Modify Method**: Modifies the document on the system
+- 🛠️ **Modify Method**: Modifies the document on the system
 - 📤 **Save Method**: Saves the document to a file on the system (Automatically Handled)
 
 ---
@@ -34,7 +34,7 @@ Each Document objects have the following methods:
 
 ---
 
-## ▶️ Installation & Usage
+## ▶️ Installation & Usage 
 
 ### Setup Instructions
 1. Clone the repository:
