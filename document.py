@@ -587,7 +587,13 @@ class Email(Document):
             f"{self.text}\n\n"
             f"{'Sincerely,':>100}\n"
             f"{self.author:>100}"
-        )
+            )
+        print("Press 'esc' to exit.")
+        while True:
+            if keyboard.is_pressed("esc"):
+                while keyboard.is_pressed("left"):
+                    pass
+                break
 
     def share(self):
         print("Your Email has been shared.")
@@ -676,6 +682,12 @@ class Letter(Document):
             f"{'Yours truly,':>100}\n"
             f"{self.author:>100}"
         )
+        print("Press 'esc' to exit.")
+        while True:
+            if keyboard.is_pressed("esc"):
+                while keyboard.is_pressed("left"):
+                    pass
+                break
 
     def share(self):
         print("Your Letter has been shared.")
