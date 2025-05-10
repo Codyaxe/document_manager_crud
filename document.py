@@ -674,9 +674,9 @@ def create_document():
         print("Enter 2 to create Slideshow")
         print("Enter 3 to create Email")
         print("Enter 4 to create Letter")
-        print("Enter 5 to change _____")
-        print("Enter 6 to change _____")
-        print("Enter 7 to change _____")
+        print("Enter 5 to create _____")
+        print("Enter 6 to create _____")
+        print("Enter 7 to create _____")
         print("Enter 8 to exit")
         choice = input("Choose: ")
         if choice.isdigit():
