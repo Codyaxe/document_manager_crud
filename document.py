@@ -317,9 +317,9 @@ class Spreadsheet(Document):
                 self._table[i] = content[i]
 
     def create(self):
-        self.title = input("Enter the spreadsheet title: ")
-        self.author = input("Enter the spreadsheet author: ")
-        self.text = input("Enter the spreadsheet text: ")
+        self.title = input("Enter the spreadsheet's title: ")
+        self.author = input("Enter the spreadsheet's author: ")
+        self.text = input("Enter the spreadsheet's description: ")
         while True:
             self._size = input("Enter the size of the table: ")
             if self._size.isdigit():
@@ -376,6 +376,7 @@ class Spreadsheet(Document):
                     clear_console()
                     print("Please enter a valid number.")
 
+        clear_console()
         print("Modifying table...")
         time.sleep(1)
         row, col = 0, 0
