@@ -651,6 +651,7 @@ def create_document():
     print("Creating a Document...")
     time.sleep(0.1)
 
+    #None are placeholder objects
     docs = {1: Spreadsheet,
             2: SlideShow,
             3: Email,
@@ -664,8 +665,8 @@ def create_document():
         print("Documents do you want modify?")
         print("Enter 1 to create Spreadsheet")
         print("Enter 2 to create Slideshow")
-        print("Enter 3 to change Email")
-        print("Enter 4 to change Letter")
+        print("Enter 3 to create Email")
+        print("Enter 4 to create Letter")
         print("Enter 5 to change _____")
         print("Enter 6 to change _____")
         print("Enter 7 to change _____")
@@ -694,7 +695,13 @@ def share_document():
     pass
 
 def edit_document():
-    pass
+    clear_console()
+    print("Editing a Document...")
+    time.sleep(0.1)
+
+    for doc in Document.saved_documents:
+        print(f"Title: {doc.title}")
+        time.sleep(1)
 
 def remove_document():
     pass
@@ -741,7 +748,7 @@ def handle_choice(choice):
 #                   "making programmers have to scroll horizontally to "
 #                   "read the entire text", "A Message to a Classmate", "Aleckxa")
 # email_one.print()
-init()
+
 # email_one.save()
 
 # print(Document.saved_documents)
@@ -750,6 +757,7 @@ init()
 
 #For Implementing A Menu Option
 if __name__ == "__main__":
+    init()
     while True:
         print("Welcome to the Document Manager. What do you want to do today?")
         print("Enter 1 to Read Documents")
@@ -757,6 +765,7 @@ if __name__ == "__main__":
         print("Enter 3 to Share Documents")
         print("Enter 4 to Modify Documents")
         print("Enter 5 to Remove Documents")
+        print("Enter 6 to Exit")
         choice = int(input("Enter your choice: "))
         if not handle_choice(choice):
             break
