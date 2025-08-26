@@ -13,12 +13,6 @@ A simple object-oriented programming project for document management and manipul
   <img src="https://media0.giphy.com/media/v1.Y2lkPTc5MGI3NjExbDNwbjcxbTU1MTlvaTZkM293czZqYTdpNXdzaWVicjg2emZqNDM1cSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/heIX5HfWgEYlW/giphy.gif" alt="GIF" />
 </p>
 
-## 👥 Team Members
-- Maraya, Vince Anthony L.
-- Bituin, Jan Lawrence L.
-- Bugtong, Aleckxa Reign D.
-- Mendoza, Ched Reiner T.
-
 ---
 
 ## 📋 Project Overview (Short description of the system)
@@ -68,6 +62,3 @@ Each Document objects have the following methods:
 7. Enter '5' to use the Exit the program
 
 ---
-
-## 👏 Acknowledgements
-- We would like to sincerely thank our course instructor, Assistant Professor John Richard Esguerra for his guidance, support, and dedication throughout the course of this program. His thoughtful mentorship, clear instruction, and patience have been instrumental in helping us navigate challenges and deepen our understanding. We are truly grateful for the time and effort he invested in our learning.
